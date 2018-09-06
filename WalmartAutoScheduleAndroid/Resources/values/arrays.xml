@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <string-array name="timezones">
+    <item>first place</item>
+    <item>second place</item>
+    <item>America/NewYork</item>
+    <item>somehwere else</item>
+    <item>blah blah</item>
+  </string-array>
+</resources>

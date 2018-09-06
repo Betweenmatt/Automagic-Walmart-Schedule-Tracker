@@ -1,0 +1,24 @@
+<resources>
+
+
+    <string-array name="default_color_choice_values" translatable="false">
+        <item>#A4BDFC</item>
+        <item>#7AE7BF</item>
+        <item>#DBADFF</item>
+        <item>#FF887C</item>
+        <item>#FBD75B</item>
+        <item>#FFB878</item>
+        <item>#46D6DB</item>
+        <item>#E1E1E1</item>
+        <item>#5484ED</item>
+        <item>#51B749</item>
+        <item>#DC2127</item>
+    </string-array>
+
+    <string-array name="homescreen_color_choice_values" translatable="false">
+        <item>#ffffff</item>
+        <item>#000000</item>
+    </string-array>
+
+  
+</resources>

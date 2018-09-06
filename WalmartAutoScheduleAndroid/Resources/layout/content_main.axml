@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_main"
+    android:padding="10dp">
+<!--<Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Manual Schedule Check"
+        android:id="@+id/manualScheduleCheckButton" />
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="Start Auto Schedule"
+        android:id="@+id/startAutoScheduleButton" />
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="Delete"
+        android:id="@+id/settings" />-->
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/wmstatus"
+        android:text="" />
+    <Switch
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="Automagic Schedule Tracking"
+        android:id="@+id/scheduleSwitch"
+        android:textOn="On"
+        android:textOff="Off" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Make sure this is turned on for your calendar to be updated!" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/agendaRecycler"
+            android:background="@null" />
+    </LinearLayout>
+</LinearLayout>

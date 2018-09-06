@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+  <PreferenceCategory android:title="Login and Event Customization">
+    <EditTextPreference
+        android:key="username"
+        android:summary="The username you use for logging into WalmartOne."
+        android:title="WalmartOne Username" />
+    <EditTextPreference
+        android:key="password"
+        android:summary="The password you use for logging into WalmartOne."
+        android:title="WalmartOne Password"
+        android:inputType="textPassword"/>
+    <EditTextPreference
+        android:key="title"
+        android:summary="This is the title of the event to be shown in your calendar. Leave empty to have the shift job code set as the title."
+        android:title="Event Title" />
+    <com.iammatt.colorpicker.colorPicker.ColorPickerPreference
+            android:key="eventcolor"
+            android:negativeButtonText="CANCEL"
+            android:positiveButtonText="OK"
+            android:summary="The color of new events. This only applies to google calendars."
+            android:title="Event Color" />
+    <com.iammatt.colorpicker.colorPicker.ColorPickerPreference
+            android:key="updateeventcolor"
+            android:negativeButtonText="CANCEL"
+            android:positiveButtonText="OK"
+            android:summary="The color of an updated event. This only applies to google calendars."
+            android:title="Updated Event Color" />
+    <ListPreference
+        android:defaultValue="1"
+        android:dialogTitle="Calendar"
+        android:key="calendar"
+        android:summary="Set the calendar you want the events added to. Currently set to: %s"
+        android:title="Calendar" />
+    </PreferenceCategory>
+      <PreferenceCategory android:title="Reminders and Notifications">
+    <ListPreference
+      android:defaultValue="0"
+      android:dialogTitle="Reminder"
+      android:key="reminder"
+      android:summary="Set the reminder you want before each event. If you change this, all reminders will be changed. Currently set to: %s"
+      android:title="Reminder"/>
+    <SwitchPreference
+      android:defaultValue="true"
+      android:key="addshiftnotification"
+      android:title="Add Shift Notification"
+      android:summary="Notify you when a shift is added"/>
+    <SwitchPreference
+      android:defaultValue="true"
+      android:key="updateshiftnotification"
+      android:title="Update Shift Notification"
+      android:summary="Notify you when a shift is updated"/>
+    <SwitchPreference
+      android:defaultValue="true"
+      android:key="deleteshiftnotification"
+      android:title="Delete Shift Notification"
+      android:summary="Notify you when a shift is deleted"/>
+        <SwitchPreference
+          android:defaultValue="true"
+      android:key="errornotification"
+      android:title="Error Notifications"
+      android:summary="Notify you when there is an error"/>
+        </PreferenceCategory>
+  <PreferenceCategory android:title="Misc">
+    <Preference
+      android:title="Delete All Events"
+      android:key="deleteAllEvents"
+      android:summary="This deletes all the generated events in your calendar. Note: it will only delete events found in the database, which includes the last 40 days or so."/>
+  </PreferenceCategory>
+  <Preference
+    android:title="Support"
+    android:key="support"
+    android:summary="This will open up your email application if you have any questions/comments/issues!"/>
+</PreferenceScreen>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+  <PreferenceCategory android:title="Login and Event Customization">
+    <EditTextPreference
+        android:key="shifttype"
+        android:title="Shift" />
+    <EditTextPreference
+        android:key="meal"
+        android:title="Meal Time" />
+    <Preference
+      android:key="starttime"
+      android:title="Shift Start"/>
+    <Preference
+      android:key="endtime"
+      android:title="Shift End"/>
+    <com.iammatt.colorpicker.colorPicker.ColorPickerPreference
+            android:key="eventcolor"
+            android:negativeButtonText="CANCEL"
+            android:positiveButtonText="OK"
+            android:summary="The color of this updated event. This only applies to google calendars."
+            android:title="Event Color" />
+    <Preference
+      android:key="save"
+      android:title="Save Timeslot"
+      android:summary="This must be clicked for the timeslot to be changed!"/>
+    <Preference
+      android:key="delete"
+      android:title="Delete Timeslot"
+      android:summary="This cannot be undone!"/>
+  </PreferenceCategory>
+</PreferenceScreen>

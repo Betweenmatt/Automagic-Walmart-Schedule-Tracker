@@ -13,7 +13,7 @@ using Android.Widget;
 
 namespace WalmartAutoScheduleAndroid
 {
-    [Service(Name = "walmartAutoScheduleAndroid.walmartAutoScheduleAndroid.walmartAutoScheduleAndroid.ReminderService",
+    [Service(Name = "com.andrewsstudios.automagicwalmartscheduletracker.walmartAutoScheduleAndroid.ReminderService",
                Permission = "android.permission.BIND_JOB_SERVICE")]
     public class ReminderService : JobService
     {

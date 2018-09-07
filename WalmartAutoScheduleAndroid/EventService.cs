@@ -15,7 +15,7 @@ using WalmartAutoScheduleAndroid.Scraper;
 
 namespace WalmartAutoScheduleAndroid
 {
-    [Service(Name = "walmartAutoScheduleAndroid.walmartAutoScheduleAndroid.walmartAutoScheduleAndroid.EventService",
+    [Service(Name = "com.andrewsstudios.automagicwalmartscheduletracker.walmartAutoScheduleAndroid.EventService",
             Permission = "android.permission.BIND_JOB_SERVICE")]
     public class EventService : JobService
     {

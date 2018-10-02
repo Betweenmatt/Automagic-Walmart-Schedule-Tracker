@@ -52,6 +52,12 @@ namespace WalmartAutoScheduleAndroid
         public static WalmartOneStatus WalmartOneStatus { get; set; }
         private static WalmartOneStatus _walmartOneStatus;
 
+        public static bool ShowDaysOff { get; set; }
+        private static bool _showDaysOff;
+
+        public static int DayOffColorId { get; set; }
+        private static int _dayOffColorId;
+
         public static List<CalendarObject> CalendarObjects { get; set; }
 
 
@@ -86,6 +92,10 @@ namespace WalmartAutoScheduleAndroid
             public const string ReminderDef = "0";
             public const string IsCalendarGoogle = "IsCalendarGoogle";
             public const bool IsCalendarGoogleDef = false;
+            public const string ShowDaysOff = "ShowDaysOff";
+            public const bool ShowDaysOffDef = false;
+            public const string DayOffColorId = "DayOffColorId";
+            public const int DayOffColorIdDef = 7;
         }
 
         public static void SaveAllSettings(Context context)
@@ -115,6 +125,10 @@ namespace WalmartAutoScheduleAndroid
                 editor.PutString(Consts.Reminder, _reminder = Reminder);
             if (IsCalendarGoogle != _isCalendarGoogle)
                 editor.PutBoolean(Consts.IsCalendarGoogle, _isCalendarGoogle = IsCalendarGoogle);
+            if (ShowDaysOff != _showDaysOff)
+                editor.PutBoolean(Consts.ShowDaysOff, _showDaysOff = ShowDaysOff);
+            if (DayOffColorId != _dayOffColorId)
+                editor.PutInt(Consts.DayOffColorId, _dayOffColorId = DayOffColorId);
             editor.Apply();
         }
 
@@ -134,6 +148,8 @@ namespace WalmartAutoScheduleAndroid
             WalmartOneStatus = _walmartOneStatus = (WalmartOneStatus)settings.GetInt(Consts.WalmartOneStatus, (int)Consts.WalmartOneStatusDef);
             Reminder = _reminder = settings.GetString(Consts.Reminder, Consts.ReminderDef);
             IsCalendarGoogle = _isCalendarGoogle = settings.GetBoolean(Consts.IsCalendarGoogle, Consts.IsCalendarGoogleDef);
+            ShowDaysOff = _showDaysOff = settings.GetBoolean(Consts.ShowDaysOff, Consts.ShowDaysOffDef);
+            DayOffColorId = _dayOffColorId = settings.GetInt(Consts.DayOffColorId, Consts.DayOffColorIdDef);
         }
 
         private static ISharedPreferences GetSettings(Context context)
@@ -160,6 +176,7 @@ namespace WalmartAutoScheduleAndroid
         public string Reminder { get; }
 
         public bool IsCalendarGoogle { get; }
+        
 
         public SettingsObject()
         {

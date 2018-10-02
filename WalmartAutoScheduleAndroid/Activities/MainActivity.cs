@@ -39,11 +39,11 @@ namespace WalmartAutoScheduleAndroid
             {
                 Toast.MakeText(this, "It appears your settings aren't set, lets go to the settings menu.", ToastLength.Long).Show();
                 if(!Utilities.CheckCalendarPermissions(this))
-                    RequestPermissions(new string[] { Android.Manifest.Permission.ReadCalendar, Android.Manifest.Permission.WriteCalendar }, 0);
+                    RequestPermissionsIfAllowed(new string[] { Android.Manifest.Permission.ReadCalendar, Android.Manifest.Permission.WriteCalendar }, 0);
                 StartActivity(new Android.Content.Intent(this, typeof(SettingsActivity)));
             }
 
-            RequestPermissions(new string[] { Android.Manifest.Permission.ReadCalendar, Android.Manifest.Permission.WriteCalendar }, 0);
+            RequestPermissionsIfAllowed(new string[] { Android.Manifest.Permission.ReadCalendar, Android.Manifest.Permission.WriteCalendar }, 0);
 
 
 
@@ -82,6 +82,18 @@ namespace WalmartAutoScheduleAndroid
             SetStatus();
             
 		}
+        /// <summary>
+        /// check if android version is 6 or higher before requesting permissions
+        /// </summary>
+        /// <param name="permissions"></param>
+        /// <param name="requestCode"></param>
+        private void RequestPermissionsIfAllowed(string[] permissions, int requestCode)
+        {
+            if(Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb)
+            {
+                RequestPermissions(permissions, requestCode);
+            }
+        }
         protected override void OnResume()
         {
             base.OnResume();

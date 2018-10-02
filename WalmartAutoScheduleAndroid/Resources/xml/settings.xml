@@ -3,11 +3,11 @@
   <PreferenceCategory android:title="Login and Event Customization">
     <EditTextPreference
         android:key="username"
-        android:summary="The username you use for logging into WalmartOne."
+        android:summary="The username you use for logging into WalmartOne. NOT the Wire!"
         android:title="WalmartOne Username" />
     <EditTextPreference
         android:key="password"
-        android:summary="The password you use for logging into WalmartOne."
+        android:summary="The password you use for logging into WalmartOne. NOT the Wire!"
         android:title="WalmartOne Password"
         android:inputType="textPassword"/>
     <EditTextPreference
@@ -18,20 +18,31 @@
             android:key="eventcolor"
             android:negativeButtonText="CANCEL"
             android:positiveButtonText="OK"
-            android:summary="The color of new events. This only applies to google calendars."
+            android:summary="The color of new events. This only applies to google calendars and the agenda view."
             android:title="Event Color" />
     <com.iammatt.colorpicker.colorPicker.ColorPickerPreference
             android:key="updateeventcolor"
             android:negativeButtonText="CANCEL"
             android:positiveButtonText="OK"
-            android:summary="The color of an updated event. This only applies to google calendars."
+            android:summary="The color of an updated event. This only applies to google calendars and the agenda view."
             android:title="Updated Event Color" />
+    <com.iammatt.colorpicker.colorPicker.ColorPickerPreference
+            android:key="dayOffColor"
+            android:negativeButtonText="CANCEL"
+            android:positiveButtonText="OK"
+            android:summary="The color of your day off. This only applies to the agenda view, when Show Days Off is turned on."
+            android:title="Day Off Event Color" />
     <ListPreference
         android:defaultValue="1"
         android:dialogTitle="Calendar"
         android:key="calendar"
         android:summary="Set the calendar you want the events added to. Currently set to: %s"
         android:title="Calendar" />
+  <SwitchPreference
+      android:defaultValue="false"
+      android:key="showDaysOff"
+      android:title="Show Days Off"
+      android:summary="Shows your days off in the agenda view on the main screen. This does NOT create calendar events for your days off."/>
     </PreferenceCategory>
       <PreferenceCategory android:title="Reminders and Notifications">
     <ListPreference

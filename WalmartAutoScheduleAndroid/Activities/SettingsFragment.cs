@@ -28,6 +28,8 @@ namespace WalmartAutoScheduleAndroid.Activities
         SwitchPreference deleteNotification;
         SwitchPreference updateNotification;
         SwitchPreference errorNotification;
+        SwitchPreference showDaysOffSwitch;
+        ColorPickerPreference dayOffColor;
         ListPreference reminderList;
 
 
@@ -48,11 +50,13 @@ namespace WalmartAutoScheduleAndroid.Activities
             eventcolor = (ColorPickerPreference)FindPreference("eventcolor");
             timepref = (TimePreference)FindPreference("timesetting");
             updateeventcolor = (ColorPickerPreference)FindPreference("updateeventcolor");
+            dayOffColor = (ColorPickerPreference)FindPreference("dayOffColor");
             addNotification = (SwitchPreference)FindPreference("addshiftnotification");
             updateNotification = (SwitchPreference)FindPreference("updateshiftnotification");
             deleteNotification = (SwitchPreference)FindPreference("deleteshiftnotification");
             errorNotification = (SwitchPreference)FindPreference("errornotification");
             reminderList = (ListPreference)FindPreference("reminder");
+            showDaysOffSwitch = (SwitchPreference)FindPreference("showDaysOff");
             Preference deleteAllEvents = (Preference)FindPreference("deleteAllEvents");
             Preference support = FindPreference("support");
             
@@ -76,11 +80,27 @@ namespace WalmartAutoScheduleAndroid.Activities
                 errorNotification.Checked = true;
             else
                 errorNotification.Checked = false;
+            if (Settings.ShowDaysOff)
+                showDaysOffSwitch.Checked = true;
+            else
+                showDaysOffSwitch.Checked = false;
 
             var entries = GetEntries();
             calendarList.SetEntries(entries[0]);
             calendarList.SetEntryValues(entries[1]);
+            if(entries[0].Length < 1)
+            {
+                Toast.MakeText(this.Context, "This device does not have any calendars! Please create a calendar with your calendar app first.", ToastLength.Long).Show();
+                return;
+            }
             var calendarIndex = calendarList.FindIndexOfValue(Settings.CalendarId.ToString());
+            //this should fix issues with the saved calendar id not existing
+            if (calendarIndex == -1)
+            {
+                int.TryParse(entries[1]?[0], out int result);
+                Settings.CalendarId = result;
+                calendarIndex = calendarList.FindIndexOfValue(Settings.CalendarId.ToString());
+            }
             calendarList.SetValueIndex(calendarIndex);
 
             reminderList.SetEntries(new string[] 
@@ -92,6 +112,11 @@ namespace WalmartAutoScheduleAndroid.Activities
                 "0", "15", "30", "60", "90", "120", "360"
             });
             var reminderIndex = reminderList.FindIndexOfValue(Settings.Reminder);
+            if(reminderIndex == -1)
+            {
+                Settings.Reminder = "0";
+                reminderIndex = reminderList.FindIndexOfValue(Settings.Reminder);
+            }
             reminderList.SetValueIndex(reminderIndex);
 
             deleteAllEvents.PreferenceClick += (s, e) =>
@@ -117,9 +142,16 @@ namespace WalmartAutoScheduleAndroid.Activities
 
                 StartActivity(Intent.CreateChooser(intent, "Send Email"));
             };
-
-            eventcolor.SetIndex(Settings.EventColorId);
-            updateeventcolor.SetIndex(Settings.UpdateEventColorId);
+            try
+            {
+                eventcolor.SetIndex(Settings.EventColorId);
+                updateeventcolor.SetIndex(Settings.UpdateEventColorId);
+                dayOffColor.SetIndex(Settings.DayOffColorId);
+            }
+            catch
+            {
+                Toast.MakeText(this.Context, "There was an issue getting the colors. If this happens continuously, please email support!", ToastLength.Long).Show();
+            }
             
         }
         private string[][] GetEntries()
@@ -150,9 +182,11 @@ namespace WalmartAutoScheduleAndroid.Activities
             Settings.CalendarId = long.Parse(calendarList.Value);
             Settings.EventTitle = title.Text;
             Settings.UpdateEventColorId = updateeventcolor.GetIndex();
+            Settings.DayOffColorId = dayOffColor.GetIndex();
             Settings.EventColorId = eventcolor.GetIndex();
             Settings.SaveAllSettings(this.Activity);
             Settings.Reminder = reminderList.Value;
+            Settings.ShowDaysOff = showDaysOffSwitch.Checked;
 
             //check if calendar chosen is google.
             //This is needed because the event colors only work with google, so a check is needed when creating events.

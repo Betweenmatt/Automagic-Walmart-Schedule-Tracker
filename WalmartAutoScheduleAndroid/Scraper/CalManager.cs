@@ -69,8 +69,11 @@ namespace WalmartAutoScheduleAndroid
                 return;
             SQLiteConnection db = Connection();
             //clean db every run
-            db.Execute("DELETE FROM Day WHERE Start < ?", DateTime.Now.AddDays(-38).Ticks.ToString());
-
+            try
+            {
+                db.Execute("DELETE FROM Day WHERE Start < ?", DateTime.Now.AddDays(-38).Ticks.ToString());
+            }
+            catch { }
             var tbl = db.Table<Day>().ToList();
 
             List<DateTime> insertDateList = new List<DateTime>();
@@ -299,7 +302,7 @@ namespace WalmartAutoScheduleAndroid
         public List<Day> GetEventCollection()
         {
             SQLiteConnection db = Connection();
-            return db.Table<Day>().ToList();
+            return db.Table<Day>().ToList();   
         }
         public void DeleteTimeslot (Context context, Day obj)
         {

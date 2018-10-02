@@ -17,7 +17,7 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
 {
     class EventAdapter : RecyclerView.Adapter
     {
-        private List<Day> _list;
+        private List<Day> _list = new List<Day>();
         public override int ItemCount => _list.Count;
         private int _nextShiftPos;
         //this is saved when attached, so that scrolltoposition works from this class. i dont think this will cause a memory problem
@@ -33,7 +33,7 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
             "#FBD75B",
             "#FFB878",
             "#46D6DB",
-            "#E1E1E1",
+            "#d6d6d6",
             "#5484ED",
             "#51B749",
             "#DC2127"
@@ -41,16 +41,94 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
 
         public EventAdapter(Context context)
         {
-            _list = new CalManager(Utilities.CheckCalendarPermissions(context)).GetEventCollection()
-                .Where(w => !w.Ignore).ToList();
+            try
+            {
+                _list = CreateList(context);
+            }
+            catch
+            {
+                _list = new List<Day>();
+                Toast.MakeText(context, "There was an issue getting the agenda view. Please try again. If this issue occurs often, please email support!", ToastLength.Long).Show();
+            }
         }
         public void NotifyChange(Context context)
         {
-            _list = new CalManager(Utilities.CheckCalendarPermissions(context)).GetEventCollection()
-                .Where(w => !w.Ignore).ToList();
+            try
+            {
+                _list = CreateList(context);
+            }
+            catch
+            {
+                _list = new List<Day>();
+                Toast.MakeText(context, "There was an issue getting the agenda view. Please try again. If this issue occurs often, please email support!", ToastLength.Long).Show();
+            }
             NotifyDataSetChanged();
             ScrollTo();
         }
+
+        private List<Day> CreateList(Context context)
+        {
+            List<Day> temp = new List<Day>();
+            temp = new CalManager(Utilities.CheckCalendarPermissions(context)).GetEventCollection().Where(w => !w.Ignore).ToList();
+            if (Settings.ShowDaysOff)
+            {
+                try
+                {
+                    int length = temp.Count + 21;
+                    DateTime startDate = temp[0].Start;
+                    DateTime lastPossibleDay = GetLastFriday(temp[temp.Count - 1].Start);
+                    for(int i = 0; i < length; i++)
+                    {
+                        DateTime current = startDate.AddDays(i);
+                        if (current.Date > lastPossibleDay.Date)
+                            break;
+                        if(temp.FirstOrDefault(f=>f.Start.Date == current.Date) == null)
+                        {
+                            temp.Add(new Day()
+                            {
+                                DayId = -1,
+                                Start = current,
+                                End = current,
+                                BackupStart = current,
+                                BackupEnd = current
+                            });
+                        }
+                    }
+                    temp = temp.OrderBy(o => o.Start).ToList();
+                }
+                catch {
+                    Toast.MakeText(context, "There was an issue showing days off, so they have been ignored.", ToastLength.Long).Show();
+                }
+            }
+            return temp;
+        }
+        /// <summary>
+        /// gets the last friday of the last week in the calendar(when given the last day in the database)
+        /// </summary>
+        /// <param name="lastDay"></param>
+        /// <returns></returns>
+        private DateTime GetLastFriday(DateTime lastDay)
+        {
+            switch (lastDay.DayOfWeek)
+            {
+                case (DayOfWeek.Friday):
+                    return lastDay;
+                case (DayOfWeek.Saturday):
+                    return lastDay.AddDays(6);
+                case (DayOfWeek.Sunday):
+                    return lastDay.AddDays(5);
+                case (DayOfWeek.Monday):
+                    return lastDay.AddDays(4);
+                case (DayOfWeek.Tuesday):
+                    return lastDay.AddDays(3);
+                case (DayOfWeek.Wednesday):
+                    return lastDay.AddDays(2);
+                case (DayOfWeek.Thursday):
+                    return lastDay.AddDays(1);
+            }
+            return lastDay;
+        }
+
         private void ScrollTo()
         {
             var obj = _list.FirstOrDefault(f => f.Start >= DateTime.Now);
@@ -67,26 +145,44 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             var obj = _list[position];
-            if(holder is EventViewHolder h)
+            if (holder is EventViewHolder h)
             {
-                h.Date.Text = obj.Start.Date.ToString("dddd, MMMM d") + DateSuffix(obj.Start);
-                h.Time.Text = $"{obj.Start.ToShortTimeString()} - {obj.End.ToShortTimeString()}";
-                h.Shift.Text = obj.Shift;//.Replace("\r","").Replace("\n", "").Replace("\t", "");
-                h.Meal.Text = obj.Meal;//.Replace("\r", "").Replace("\n", "").Replace("\t", "");
-                
-                Color bg = Color.ParseColor(
-                     (obj.OverrideColor == -1) ? 
-                        ((obj.IsError || obj.IsUpdated)
-                        ? _calendarcolorlist[Settings.UpdateEventColorId]
-                        : _calendarcolorlist[Settings.EventColorId])
-                    : _calendarcolorlist[obj.OverrideColor]
-                    );
-                h.ElevatedCard.SetCardBackgroundColor(bg);
-                h.Date.SetTextColor(Color.White);
-                h.Date.SetTextSize(Android.Util.ComplexUnitType.Sp, 18);
-                h.Time.SetTextSize(Android.Util.ComplexUnitType.Sp, 18);
-                h.Time.SetTextColor(Color.White);
-                if(position == _nextShiftPos)
+                if (obj.DayId == -1)
+                {
+                    h.Date.Text = obj.Start.Date.ToString("dddd, MMMM d") + DateSuffix(obj.Start);
+                    h.Time.Text = "Unscheduled";
+                    h.Shift.Text = obj.Shift;
+                    h.Meal.Text = obj.Meal;
+                    Color bg = Color.ParseColor(_calendarcolorlist[Settings.DayOffColorId]);
+                    h.ElevatedCard.SetCardBackgroundColor(bg);
+                    h.Date.SetTextColor(Color.White);
+                    h.Date.SetTextSize(Android.Util.ComplexUnitType.Sp, 18);
+                    h.Time.SetTextSize(Android.Util.ComplexUnitType.Sp, 18);
+                    h.Time.SetTextColor(Color.White);
+                    h.RemoveListener();
+                }
+                else
+                {
+                    h.Date.Text = obj.Start.Date.ToString("dddd, MMMM d") + DateSuffix(obj.Start);
+                    h.Time.Text = $"{obj.Start.ToShortTimeString()} - {obj.End.ToShortTimeString()}";
+                    h.Shift.Text = obj.Shift;//.Replace("\r","").Replace("\n", "").Replace("\t", "");
+                    h.Meal.Text = obj.Meal;//.Replace("\r", "").Replace("\n", "").Replace("\t", "");
+
+                    Color bg = Color.ParseColor(
+                         (obj.OverrideColor == -1) ?
+                            ((obj.IsError || obj.IsUpdated)
+                            ? _calendarcolorlist[Settings.UpdateEventColorId]
+                            : _calendarcolorlist[Settings.EventColorId])
+                        : _calendarcolorlist[obj.OverrideColor]
+                        );
+                    h.ElevatedCard.SetCardBackgroundColor(bg);
+                    h.Date.SetTextColor(Color.White);
+                    h.Date.SetTextSize(Android.Util.ComplexUnitType.Sp, 18);
+                    h.Time.SetTextSize(Android.Util.ComplexUnitType.Sp, 18);
+                    h.Time.SetTextColor(Color.White);
+                }
+
+                if (position == _nextShiftPos)
                 {
                     h.MainCard.SetCardBackgroundColor(Color.PaleGreen);
                 }

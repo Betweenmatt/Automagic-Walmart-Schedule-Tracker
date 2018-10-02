@@ -35,7 +35,10 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
             ElevatedCard = itemView.FindViewById<CardView>(Resource.Id.elevated_card);
             itemView.SetOnClickListener(this);
         }
-
+        public void RemoveListener()
+        {
+            ItemView.SetOnClickListener(null);
+        }
         public void OnClick(View v)
         {
             ChangeTimeslotActivity.WorkingObj = WorkingObject;

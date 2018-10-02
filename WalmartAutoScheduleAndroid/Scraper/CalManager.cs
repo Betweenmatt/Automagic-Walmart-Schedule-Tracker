@@ -245,8 +245,16 @@ namespace WalmartAutoScheduleAndroid
             values.Put(CalendarContract.Events.InterfaceConsts.Description, desc);
             values.Put(CalendarContract.Events.InterfaceConsts.Dtstart, GetDateTimeMs(start));
             values.Put(CalendarContract.Events.InterfaceConsts.Dtend, GetDateTimeMs(end));
-            Android.Icu.Util.TimeZone tx = Android.Icu.Util.TimeZone.Default;
-            values.Put(CalendarContract.Events.InterfaceConsts.EventTimezone, tx.ID);
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
+            {
+                Android.Icu.Util.TimeZone tx = Android.Icu.Util.TimeZone.Default;
+                values.Put(CalendarContract.Events.InterfaceConsts.EventTimezone, tx.ID);
+            }
+            else
+            {
+                Java.Util.TimeZone tx = Java.Util.TimeZone.Default;
+                values.Put(CalendarContract.Events.InterfaceConsts.EventTimezone, tx.ID);
+            }
             values.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, 0);
             if(isgoogle)
                 values.Put(CalendarContract.Events.InterfaceConsts.EventColorKey, (color + 1).ToString());

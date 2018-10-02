@@ -66,7 +66,9 @@
     <Compile Include="Activities\ChangeTimeslotActivity.cs" />
     <Compile Include="Activities\IntroActivity.cs" />
     <Compile Include="Activities\SettingsActivity.cs" />
+    <Compile Include="Activities\SettingsActivityCompat.cs" />
     <Compile Include="Activities\SettingsFragment.cs" />
+    <Compile Include="Activities\SettingsFragmentCompat.cs" />
     <Compile Include="EventRecycler\EventAdapter.cs" />
     <Compile Include="EventRecycler\EventViewHolder.cs" />
     <Compile Include="Fragments\BaseIntroFragment.cs" />
@@ -141,6 +143,9 @@
     <PackageReference Include="Xamarin.Android.Support.v7.CardView">
       <Version>27.0.2.1</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.v7.Preference">
+      <Version>27.0.2</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\arrays.xml" />
@@ -209,6 +214,14 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\mipmap-hdpi\customization_img.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\activity_settingscompat.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\xml\settingscompat.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

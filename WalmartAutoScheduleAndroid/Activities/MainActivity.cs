@@ -40,7 +40,7 @@ namespace WalmartAutoScheduleAndroid
                 Toast.MakeText(this, "It appears your settings aren't set, lets go to the settings menu.", ToastLength.Long).Show();
                 if(!Utilities.CheckCalendarPermissions(this))
                     RequestPermissionsIfAllowed(new string[] { Android.Manifest.Permission.ReadCalendar, Android.Manifest.Permission.WriteCalendar }, 0);
-                StartActivity(new Android.Content.Intent(this, typeof(SettingsActivity)));
+                OpenSettings();
             }
 
             RequestPermissionsIfAllowed(new string[] { Android.Manifest.Permission.ReadCalendar, Android.Manifest.Permission.WriteCalendar }, 0);
@@ -82,6 +82,13 @@ namespace WalmartAutoScheduleAndroid
             SetStatus();
             
 		}
+        private void OpenSettings()
+        {
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
+                StartActivity(new Android.Content.Intent(this, typeof(SettingsActivity)));
+            else
+                StartActivity(new Android.Content.Intent(this, typeof(SettingsActivityCompat)));
+        }
         /// <summary>
         /// check if android version is 6 or higher before requesting permissions
         /// </summary>
@@ -89,7 +96,7 @@ namespace WalmartAutoScheduleAndroid
         /// <param name="requestCode"></param>
         private void RequestPermissionsIfAllowed(string[] permissions, int requestCode)
         {
-            if(Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb)
+            if(Build.VERSION.SdkInt >= BuildVersionCodes.M)
             {
                 RequestPermissions(permissions, requestCode);
             }
@@ -135,7 +142,7 @@ namespace WalmartAutoScheduleAndroid
             int id = item.ItemId;
             if (id == Resource.Id.action_settings)
             {
-                StartActivity(new Android.Content.Intent(this, typeof(Activities.SettingsActivity)));
+                OpenSettings();
                 return true;
             }
 

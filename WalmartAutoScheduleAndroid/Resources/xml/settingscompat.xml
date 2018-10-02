@@ -13,64 +13,46 @@
         android:key="title"
         android:summary="This is the title of the event to be shown in your calendar. Leave empty to have the shift job code set as the title."
         android:title="Event Title" />
-    <com.iammatt.colorpicker.colorPicker.ColorPickerPreference
-            android:key="eventcolor"
-            android:negativeButtonText="CANCEL"
-            android:positiveButtonText="OK"
-            android:summary="The color of new events. This only applies to google calendars and the agenda view."
-            android:title="Event Color" />
-    <com.iammatt.colorpicker.colorPicker.ColorPickerPreference
-            android:key="updateeventcolor"
-            android:negativeButtonText="CANCEL"
-            android:positiveButtonText="OK"
-            android:summary="The color of an updated event. This only applies to google calendars and the agenda view."
-            android:title="Updated Event Color" />
-    <com.iammatt.colorpicker.colorPicker.ColorPickerPreference
-            android:key="dayOffColor"
-            android:negativeButtonText="CANCEL"
-            android:positiveButtonText="OK"
-            android:summary="The color of your day off. This only applies to the agenda view, when Show Days Off is turned on."
-            android:title="Day Off Event Color" />
     <ListPreference
         android:defaultValue="1"
         android:dialogTitle="Calendar"
         android:key="calendar"
         android:summary="Set the calendar you want the events added to. Currently set to: %s"
         android:title="Calendar" />
-  <SwitchPreference
-      android:defaultValue="false"
-      android:key="showDaysOff"
-      android:title="Show Days Off"
-      android:summary="Shows your days off in the agenda view on the main screen. This does NOT create calendar events for your days off."/>
-    </PreferenceCategory>
-      <PreferenceCategory android:title="Reminders and Notifications">
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="showDaysOff"
+        android:title="Show Days Off"
+        android:summary="Shows your days off in the agenda view on the main screen. This does NOT create calendar events for your days off."/>
+  </PreferenceCategory>
+  <PreferenceCategory android:title="Reminders and Notifications">
     <ListPreference
       android:defaultValue="0"
       android:dialogTitle="Reminder"
       android:key="reminder"
       android:summary="Set the reminder you want before each event. If you change this, all reminders will be changed. Currently set to: %s"
       android:title="Reminder"/>
-    <SwitchPreference
+    <SwitchPreferenceCompat
       android:defaultValue="true"
       android:key="addshiftnotification"
       android:title="Add Shift Notification"
       android:summary="Notify you when a shift is added"/>
-    <SwitchPreference
+    <SwitchPreferenceCompat
       android:defaultValue="true"
       android:key="updateshiftnotification"
       android:title="Update Shift Notification"
       android:summary="Notify you when a shift is updated"/>
-    <SwitchPreference
+    <SwitchPreferenceCompat
       android:defaultValue="true"
       android:key="deleteshiftnotification"
       android:title="Delete Shift Notification"
       android:summary="Notify you when a shift is deleted"/>
-        <SwitchPreference
-          android:defaultValue="true"
-      android:key="errornotification"
-      android:title="Error Notifications"
-      android:summary="Notify you when there is an error"/>
-        </PreferenceCategory>
+    <SwitchPreferenceCompat
+      android:defaultValue="true"
+  android:key="errornotification"
+  android:title="Error Notifications"
+  android:summary="Notify you when there is an error"/>
+  </PreferenceCategory>
   <PreferenceCategory android:title="Misc">
     <Preference
       android:title="Delete All Events"

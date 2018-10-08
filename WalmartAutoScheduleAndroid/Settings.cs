@@ -62,7 +62,7 @@ namespace WalmartAutoScheduleAndroid
 
 
 
-        private class Consts
+        internal class Consts
         {
             public const string EventTitle = "EventTitle";
             public const string EventTitleDef = "Walmart - Work";

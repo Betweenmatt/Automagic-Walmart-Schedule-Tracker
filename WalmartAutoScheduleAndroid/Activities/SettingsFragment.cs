@@ -179,19 +179,23 @@ namespace WalmartAutoScheduleAndroid.Activities
         {
             Settings.UserName = un.Text;
             Settings.Password = pw.Text;
-            Settings.CalendarId = long.Parse(calendarList.Value);
+
+            if (long.TryParse(calendarList.Value, out long res))
+                Settings.CalendarId = res;
+            else
+                Settings.CalendarId = Settings.Consts.CalendarIdDef;
+
             Settings.EventTitle = title.Text;
             Settings.UpdateEventColorId = updateeventcolor.GetIndex();
             Settings.DayOffColorId = dayOffColor.GetIndex();
             Settings.EventColorId = eventcolor.GetIndex();
-            Settings.SaveAllSettings(this.Activity);
             Settings.Reminder = reminderList.Value;
             Settings.ShowDaysOff = showDaysOffSwitch.Checked;
 
             //check if calendar chosen is google.
             //This is needed because the event colors only work with google, so a check is needed when creating events.
             var calobj = Settings.CalendarObjects.FirstOrDefault(f => f.Id == Settings.CalendarId);
-            Settings.IsCalendarGoogle = calobj.Type == "com.google" ? true : false;
+            Settings.IsCalendarGoogle = calobj?.Type == "com.google" ? true : false;
 
             Settings.NotificationFlags = NotificationFlag.None;
             if (addNotification.Checked)
@@ -202,6 +206,9 @@ namespace WalmartAutoScheduleAndroid.Activities
                 Settings.NotificationFlags |= NotificationFlag.DeleteShift;
             if (errorNotification.Checked)
                 Settings.NotificationFlags |= NotificationFlag.Error;
+
+
+            Settings.SaveAllSettings(this.Activity);
         }
     }
 }

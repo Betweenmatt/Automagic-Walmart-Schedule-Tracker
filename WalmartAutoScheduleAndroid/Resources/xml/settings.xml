@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
   <PreferenceCategory android:title="Login and Event Customization">
+    <Preference
+    android:title="Login"
+    android:key="loginButton"
+    android:summary="Login to your WalmartOne Account."/>
+    <!--
     <EditTextPreference
         android:key="username"
         android:summary="The username you use for logging into WalmartOne. NOT the Wire!"
@@ -9,6 +14,7 @@
         android:key="password"
         android:summary="The password you use for logging into WalmartOne. NOT the Wire!"
         android:title="WalmartOne Password"/>
+        -->
     <EditTextPreference
         android:key="title"
         android:summary="This is the title of the event to be shown in your calendar. Leave empty to have the shift job code set as the title."
@@ -80,5 +86,5 @@
   <Preference
     android:title="Support"
     android:key="support"
-    android:summary="This will open up your email application if you have any questions/comments/issues!"/>
+    android:summary="This will open up your email application if you have any questions/comments/issues!\n\nKeep in mind, this application was created by a Walmart Associate in his free time, so any concerns about your schedule should be brought to your manager! This application only takes the information from WalmartOne."/>
 </PreferenceScreen>

@@ -21,6 +21,28 @@ namespace WalmartAutoScheduleAndroid.Scraper
         {
             _settings = settings;
         }
+        /// <summary>
+        /// Returns only the login status. Use Execute for returning data.
+        /// </summary>
+        /// <returns></returns>
+        public SiteScraperReturnObject LoginCheck()
+        {
+            System.Diagnostics.Debug.WriteLine("starting login");
+            string page = GetSiteData();
+            //Console.WriteLine(page);
+            System.Diagnostics.Debug.WriteLine("login complete");
+
+            //scrape checks to ensure the correct page was loaded
+            if (page.Contains("WalmartOne - Associate Login"))
+            {
+                return new SiteScraperReturnObject(SiteScraperReturnStatus.WrongLogin, null);
+            }
+            else if (page.Contains("OnlineSchedule Error Page"))
+            {
+                return new SiteScraperReturnObject(SiteScraperReturnStatus.Error, null);
+            }
+            return new SiteScraperReturnObject(SiteScraperReturnStatus.Success, null);
+        }
 
         public SiteScraperReturnObject Execute()
         {

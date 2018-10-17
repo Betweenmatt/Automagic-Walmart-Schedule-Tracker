@@ -28,7 +28,9 @@ namespace WalmartAutoScheduleAndroid
 
 			Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
-            
+
+            IO.Fabric.Sdk.Android.Fabric.With(this, new Com.Crashlytics.Android.Crashlytics());
+
             Settings.LoadAllSettings(this);
 
             if (!Settings.IntroComplete)
@@ -80,7 +82,7 @@ namespace WalmartAutoScheduleAndroid
             _adapter = new EventAdapter(this);
             recycler.SetAdapter(_adapter);
             SetStatus();
-            
+            AppRateReminder.Launched(this);
 		}
         private void OpenSettings()
         {
@@ -105,6 +107,7 @@ namespace WalmartAutoScheduleAndroid
         {
             base.OnResume();
             RefreshListAdapter();
+            SetStatus();
         }
         public void RefreshListAdapter()
         {
@@ -116,6 +119,8 @@ namespace WalmartAutoScheduleAndroid
         public void SetStatus()
         {
             var v = FindViewById<TextView>(Resource.Id.wmstatus);
+            if(v != null)
+            {
             switch (Settings.WalmartOneStatus)
             {
                 case (WalmartOneStatus.Unknown):
@@ -130,6 +135,7 @@ namespace WalmartAutoScheduleAndroid
                 case (WalmartOneStatus.LoginInfoWrong):
                     v.Text = "Your Login Info is Wrong!";
                     break;
+                }
             }
         }
 		public override bool OnCreateOptionsMenu(IMenu menu)

@@ -24,5 +24,39 @@ namespace WalmartAutoScheduleAndroid
                 return true;
             return false;
         }
+
+        public static int GetWalmartWeek(DateTime date)
+        {
+            var thisyear = date.Year;
+            //if month is january, then we need to get the previous year
+            //because walmarts first week falls on feb 1st
+            if (date.Month == 1)
+                thisyear -= 1;
+            var febfirst = new DateTime(thisyear,2,1);
+            switch (febfirst.DayOfWeek)
+            {
+                case (DayOfWeek.Sunday):
+                    febfirst = febfirst.AddDays(-1);
+                    break;
+                case (DayOfWeek.Monday):
+                    febfirst = febfirst.AddDays(-2);
+                    break;
+                case (DayOfWeek.Tuesday):
+                    febfirst = febfirst.AddDays(-3);
+                    break;
+                case (DayOfWeek.Wednesday):
+                    febfirst = febfirst.AddDays(-4);
+                    break;
+                case (DayOfWeek.Thursday):
+                    febfirst = febfirst.AddDays(-5);
+                    break;
+                case (DayOfWeek.Friday):
+                    febfirst = febfirst.AddDays(-6);
+                    break;
+            }
+            TimeSpan difference = date - febfirst;
+
+            return ((int)difference.TotalDays / 7) + 1;
+        }
     }
 }

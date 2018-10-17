@@ -180,16 +180,39 @@ namespace WalmartAutoScheduleAndroid
             if (!_permissions)
                 return;
 
-            var eventUri = ContentUris.WithAppendedId(CalendarContract.Events.ContentUri, long.Parse(obj.EventId));
-            var values = GetContentValues(settings.CalendarId,
-                settings.EventTitle == "" ? obj.Shift : settings.EventTitle, $"{obj.Shift}\n{obj.Meal}",
-                obj.Start, obj.End,
-                color,
-                settings.IsCalendarGoogle);
-            context.ContentResolver.Update(eventUri, values, null, null);
-
             var db = Connection();
-            db.Update(obj);
+            if (obj.EventId != null)
+            {
+                var eventUri = ContentUris.WithAppendedId(CalendarContract.Events.ContentUri, long.Parse(obj.EventId));
+                var values = GetContentValues(settings.CalendarId,
+                    settings.EventTitle == "" ? obj.Shift : settings.EventTitle, $"{obj.Shift}\n{obj.Meal}",
+                    obj.Start, obj.End,
+                    color,
+                    settings.IsCalendarGoogle);
+                context.ContentResolver.Update(eventUri, values, null, null);
+
+                if (obj.DayId != -1)
+                    db.Update(obj);
+                else
+                {
+                    obj.DayId = 0;
+                    db.Insert(obj);
+                }
+            }
+            else
+            {
+                var values = GetContentValues(settings.CalendarId,
+                    settings.EventTitle == "" ? obj.Shift : settings.EventTitle, $"{obj.Shift}\n{obj.Meal}",
+                    obj.Start, obj.End,
+                    color,
+                    settings.IsCalendarGoogle);
+                var uri = context.ContentResolver.Insert(CalendarContract.Events.ContentUri, values);
+                var id = uri.LastPathSegment;
+                obj.EventId = id;
+                obj.Start = obj.Start;
+                
+                db.Insert(obj);
+            }
         }
         public void SetReminders(Context context, SettingsObject settings)
         {

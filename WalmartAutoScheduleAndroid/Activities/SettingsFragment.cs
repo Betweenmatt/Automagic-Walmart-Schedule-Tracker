@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
+using Android.Text.Method;
+using Android.Text.Util;
 using Android.Views;
 using Android.Widget;
 using ColorPicker;
+using WalmartAutoScheduleAndroid.Scraper;
 
 namespace WalmartAutoScheduleAndroid.Activities
 {
     class SettingsFragment : PreferenceFragment
     {
-        EditTextPreference un;
-        EditTextPreference pw;
+        //EditTextPreference un;
+        //EditTextPreference pw;
         EditTextPreference title;
         EditTextPreference calendarid;
         ListPreference calendarList;
@@ -42,8 +45,8 @@ namespace WalmartAutoScheduleAndroid.Activities
 
             Settings.CalendarObjects = new CalManager(Utilities.CheckCalendarPermissions(this.Context)).GetCalendars(this.Context);
 
-            un = (EditTextPreference)FindPreference("username");
-            pw = (EditTextPreference)FindPreference("password");
+            //un = (EditTextPreference)FindPreference("username");
+            //pw = (EditTextPreference)FindPreference("password");
             title = (EditTextPreference)FindPreference("title");
             calendarid = (EditTextPreference)FindPreference("calendarid");
             calendarList = (ListPreference)FindPreference("calendar");
@@ -59,9 +62,88 @@ namespace WalmartAutoScheduleAndroid.Activities
             showDaysOffSwitch = (SwitchPreference)FindPreference("showDaysOff");
             Preference deleteAllEvents = (Preference)FindPreference("deleteAllEvents");
             Preference support = FindPreference("support");
+            Preference loginButton = FindPreference("loginButton");
+
+            loginButton.PreferenceClick += (s, e) =>
+            {
+                var dialog = new Dialog(this.Activity);
+                dialog.SetContentView(Resource.Layout.popup_login_dialog);
+                dialog.SetCancelable(true);
+                var un = dialog.FindViewById<EditText>(Resource.Id.etEmail);
+                var pw = dialog.FindViewById<EditText>(Resource.Id.etPassword);
+                var login = dialog.FindViewById<Button>(Resource.Id.btnLogin);
+                var help = dialog.FindViewById<TextView>(Resource.Id.helpLink);
+                help.MovementMethod = LinkMovementMethod.Instance;
+                //Linkify.AddLinks(help, MatchOptions.All);
+                un.Text = Settings.UserName;
+                pw.Text = Settings.Password;
+                dialog.Show();
+                login.Click += (ss, ee) =>
+                {
+                    login.Enabled = false;
+                    Settings.UserName = un.Text;
+                    Settings.Password = pw.Text;
+                    var prog = new ProgressDialog(this.Activity);
+                    prog.SetTitle("Logging in");
+                    prog.SetMessage("Please wait...");
+                    prog.Indeterminate = true;
+                    prog.SetCancelable(false);
+                    prog.Show();
+                    new Thread(() =>
+                    {
+                        var ret = new SiteScraper(new SettingsObject()).LoginCheck();
+                        prog.Dismiss();
+                        this.Activity.RunOnUiThread(() =>
+                        {
+                            if (ret.Status == SiteScraperReturnStatus.Error)
+                            {
+                                Settings.WalmartOneStatus = WalmartOneStatus.Offline;
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this.Activity);
+                                alert.SetTitle("Error!");
+                                alert.SetMessage("There was an error connecting to WalmartOne. The WalmartOne service is most likely down. Please try logging in at a later time!");
+                                alert.SetCancelable(false);
+                                alert.SetPositiveButton("Ok", (sss, eee) =>
+                                {
+                                    dialog.Dismiss();
+                                });
+                                alert.Show();
+                            }
+                            else if (ret.Status == SiteScraperReturnStatus.WrongLogin)
+                            {
+                                Settings.WalmartOneStatus = WalmartOneStatus.LoginInfoWrong;
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this.Activity);
+                                alert.SetTitle("Wrong Login!");
+                                alert.SetCancelable(false);
+                                alert.SetMessage("The login info you provided is not correct! Please double check your information and try again.");
+                                alert.SetPositiveButton("Ok", (sss, eee) => { });
+                                alert.Show();
+                                Settings.UserName = "";
+                                Settings.Password = "";
+                                un.Text = "";
+                                pw.Text = "";
+                            }
+                            else
+                            {
+                                Settings.WalmartOneStatus = WalmartOneStatus.Online;
+                                AlertDialog.Builder alert = new AlertDialog.Builder(this.Activity);
+                                alert.SetTitle("Success!");
+                                alert.SetCancelable(false);
+                                alert.SetMessage("Success! The login info you provided is correct. You may proceed!");
+                                alert.SetPositiveButton("Ok", (sss, eee) =>
+                                {
+                                    dialog.Dismiss();
+                                });
+                                alert.Show();
+                            }
+                            login.Enabled = true;
+
+                        });
+                    }).Start();
+                };
+            };
             
-            un.Text = Settings.UserName;
-            pw.Text = Settings.Password;
+            //un.Text = Settings.UserName;
+            //pw.Text = Settings.Password;
             title.Text = Settings.EventTitle;
 
             if (Settings.NotificationFlags.HasFlag(NotificationFlag.AddShift))
@@ -177,38 +259,44 @@ namespace WalmartAutoScheduleAndroid.Activities
         }
         private void PrefToSettings()
         {
-            Settings.UserName = un.Text;
-            Settings.Password = pw.Text;
+            //Settings.UserName = un.Text;
+            //Settings.Password = pw.Text;
+            try
+            {
 
-            if (long.TryParse(calendarList.Value, out long res))
-                Settings.CalendarId = res;
-            else
-                Settings.CalendarId = Settings.Consts.CalendarIdDef;
+                if (long.TryParse(calendarList.Value, out long res))
+                    Settings.CalendarId = res;
+                else
+                    Settings.CalendarId = Settings.Consts.CalendarIdDef;
 
-            Settings.EventTitle = title.Text;
-            Settings.UpdateEventColorId = updateeventcolor.GetIndex();
-            Settings.DayOffColorId = dayOffColor.GetIndex();
-            Settings.EventColorId = eventcolor.GetIndex();
-            Settings.Reminder = reminderList.Value;
-            Settings.ShowDaysOff = showDaysOffSwitch.Checked;
+                Settings.EventTitle = title.Text;
+                Settings.UpdateEventColorId = updateeventcolor.GetIndex();
+                Settings.DayOffColorId = dayOffColor.GetIndex();
+                Settings.EventColorId = eventcolor.GetIndex();
+                Settings.Reminder = reminderList.Value;
+                Settings.ShowDaysOff = showDaysOffSwitch.Checked;
 
-            //check if calendar chosen is google.
-            //This is needed because the event colors only work with google, so a check is needed when creating events.
-            var calobj = Settings.CalendarObjects.FirstOrDefault(f => f.Id == Settings.CalendarId);
-            Settings.IsCalendarGoogle = calobj?.Type == "com.google" ? true : false;
+                //check if calendar chosen is google.
+                //This is needed because the event colors only work with google, so a check is needed when creating events.
+                var calobj = Settings.CalendarObjects.FirstOrDefault(f => f.Id == Settings.CalendarId);
+                Settings.IsCalendarGoogle = calobj?.Type == "com.google" ? true : false;
 
-            Settings.NotificationFlags = NotificationFlag.None;
-            if (addNotification.Checked)
-                Settings.NotificationFlags |= NotificationFlag.AddShift;
-            if (updateNotification.Checked)
-                Settings.NotificationFlags |= NotificationFlag.UpdateShift;
-            if (deleteNotification.Checked)
-                Settings.NotificationFlags |= NotificationFlag.DeleteShift;
-            if (errorNotification.Checked)
-                Settings.NotificationFlags |= NotificationFlag.Error;
+                Settings.NotificationFlags = NotificationFlag.None;
+                if (addNotification.Checked)
+                    Settings.NotificationFlags |= NotificationFlag.AddShift;
+                if (updateNotification.Checked)
+                    Settings.NotificationFlags |= NotificationFlag.UpdateShift;
+                if (deleteNotification.Checked)
+                    Settings.NotificationFlags |= NotificationFlag.DeleteShift;
+                if (errorNotification.Checked)
+                    Settings.NotificationFlags |= NotificationFlag.Error;
 
 
-            Settings.SaveAllSettings(this.Activity);
+                Settings.SaveAllSettings(this.Activity);
+            }catch
+            {
+                Toast.MakeText(this.Activity, "There was an issue saving your settings. Please try again.", ToastLength.Long);
+            }
         }
     }
 }

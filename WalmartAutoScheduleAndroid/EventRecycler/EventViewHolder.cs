@@ -23,6 +23,8 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
         public TextView Meal { get; }
         public CardView MainCard { get; }
         public CardView ElevatedCard { get; }
+        public LinearLayout HeaderView { get; }
+        public TextView HeaderText { get; }
         public Day WorkingObject { get; set; }
 
         public EventViewHolder(View itemView) : base(itemView)
@@ -33,6 +35,8 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
             Meal = itemView.FindViewById<TextView>(Resource.Id.meal);
             MainCard = itemView.FindViewById<CardView>(Resource.Id.card_view);
             ElevatedCard = itemView.FindViewById<CardView>(Resource.Id.elevated_card);
+            HeaderView = itemView.FindViewById<LinearLayout>(Resource.Id.header_view);
+            HeaderText = itemView.FindViewById<TextView>(Resource.Id.header_text);
             itemView.SetOnClickListener(this);
         }
         public void RemoveListener()
@@ -41,8 +45,19 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
         }
         public void OnClick(View v)
         {
-            ChangeTimeslotActivity.WorkingObj = WorkingObject;
-            v.Context.StartActivity(new Android.Content.Intent(v.Context, typeof(ChangeTimeslotActivity)));
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
+            {
+                ChangeTimeslotActivity.WorkingObj = WorkingObject;
+                v.Context.StartActivity(new Android.Content.Intent(v.Context, typeof(ChangeTimeslotActivity)));
+            }
+            else
+            {
+                //too many issues atm with timepicker in <= M
+                //time picker is throwing an exception that shouldn't be happening
+                //
+                //ChangeTimeslotActivityCompat.WorkingObj = WorkingObject;
+                //v.Context.StartActivity(new Android.Content.Intent(v.Context, typeof(ChangeTimeslotActivityCompat)));
+            }
         }
     }
 }

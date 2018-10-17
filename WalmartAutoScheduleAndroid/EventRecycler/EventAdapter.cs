@@ -70,12 +70,14 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
         {
             List<Day> temp = new List<Day>();
             temp = new CalManager(Utilities.CheckCalendarPermissions(context)).GetEventCollection().Where(w => !w.Ignore).ToList();
+            if (temp.Count < 1)
+                return temp;
             if (Settings.ShowDaysOff)
             {
                 try
                 {
                     int length = temp.Count + 21;
-                    DateTime startDate = temp[0].Start;
+                    DateTime startDate = temp[0].Start.Date;
                     DateTime lastPossibleDay = GetLastFriday(temp[temp.Count - 1].Start);
                     for(int i = 0; i < length; i++)
                     {
@@ -88,19 +90,38 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
                             {
                                 DayId = -1,
                                 Start = current,
-                                End = current,
+                                End = current.AddHours(23),
                                 BackupStart = current,
-                                BackupEnd = current
+                                BackupEnd = current.AddHours(23)
                             });
                         }
                     }
-                    temp = temp.OrderBy(o => o.Start).ToList();
                 }
                 catch {
                     Toast.MakeText(context, "There was an issue showing days off, so they have been ignored.", ToastLength.Long).Show();
                 }
             }
-            return temp;
+            temp = temp.OrderBy(o => o.Start).ToList();
+
+            //add the current week object for each week
+            int currentweek = 0;
+            List<Day> tempAfterWeeks = new List<Day>();
+            for(int i = 0; i < temp.Count; i++)
+            {
+                int getweek = Utilities.GetWalmartWeek(temp[i].BackupStart);
+                if(getweek != currentweek)
+                {
+                    currentweek = getweek;
+                    tempAfterWeeks.Add(new Day()
+                    {
+                        DayId = -2,
+                        Shift = $"Week {getweek.ToString()}"
+                    });
+                }
+                tempAfterWeeks.Add(temp[i]);
+            }
+
+            return tempAfterWeeks;
         }
         /// <summary>
         /// gets the last friday of the last week in the calendar(when given the last day in the database)
@@ -131,7 +152,7 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
 
         private void ScrollTo()
         {
-            var obj = _list.FirstOrDefault(f => f.Start >= DateTime.Now);
+            var obj = _list.FirstOrDefault(f => f.End >= DateTime.Now);
             _nextShiftPos = _list.IndexOf(obj);
             if(_recycler != null)
                 _recycler.ScrollToPosition(_nextShiftPos);
@@ -147,6 +168,8 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
             var obj = _list[position];
             if (holder is EventViewHolder h)
             {
+                h.MainCard.Visibility = ViewStates.Visible;
+                h.HeaderView.Visibility = ViewStates.Gone;
                 if (obj.DayId == -1)
                 {
                     h.Date.Text = obj.Start.Date.ToString("dddd, MMMM d") + DateSuffix(obj.Start);
@@ -159,7 +182,12 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
                     h.Date.SetTextSize(Android.Util.ComplexUnitType.Sp, 18);
                     h.Time.SetTextSize(Android.Util.ComplexUnitType.Sp, 18);
                     h.Time.SetTextColor(Color.White);
-                    h.RemoveListener();
+                }
+                else if(obj.DayId == -2)
+                {
+                    h.MainCard.Visibility = ViewStates.Gone;
+                    h.HeaderView.Visibility = ViewStates.Visible;
+                    h.HeaderText.Text = obj.Shift;
                 }
                 else
                 {

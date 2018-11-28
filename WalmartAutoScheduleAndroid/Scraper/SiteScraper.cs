@@ -25,10 +25,11 @@ namespace WalmartAutoScheduleAndroid.Scraper
         /// Returns only the login status. Use Execute for returning data.
         /// </summary>
         /// <returns></returns>
-        public SiteScraperReturnObject LoginCheck()
+        public SiteScraperReturnObject LoginCheck(string page = null)
         {
             System.Diagnostics.Debug.WriteLine("starting login");
-            string page = GetSiteData();
+            if(page == null)
+                page = GetSiteData();
             //Console.WriteLine(page);
             System.Diagnostics.Debug.WriteLine("login complete");
 
@@ -46,21 +47,11 @@ namespace WalmartAutoScheduleAndroid.Scraper
 
         public SiteScraperReturnObject Execute()
         {
-            System.Diagnostics.Debug.WriteLine("starting login");
             string page = GetSiteData();
-            //Console.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine("login complete");
-
-            //scrape checks to ensure the correct page was loaded
-            if (page.Contains("WalmartOne - Associate Login"))
-            {
-                return new SiteScraperReturnObject(SiteScraperReturnStatus.WrongLogin, null);
-            }
-            else if (page.Contains("OnlineSchedule Error Page"))
-            {
-                return new SiteScraperReturnObject(SiteScraperReturnStatus.Error, null);
-            }
-
+            var login = LoginCheck(page);
+            if (login.Status == SiteScraperReturnStatus.Error ||
+                login.Status == SiteScraperReturnStatus.WrongLogin)
+                return login;
             //HAP voodoo
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
             doc.LoadHtml(page);

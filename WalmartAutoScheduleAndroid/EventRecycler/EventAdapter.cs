@@ -72,6 +72,7 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
             temp = new CalManager(Utilities.CheckCalendarPermissions(context)).GetEventCollection().Where(w => !w.Ignore).ToList();
             if (temp.Count < 1)
                 return temp;
+            temp = temp.OrderBy(o => o.Start).ToList();
             if (Settings.ShowDaysOff)
             {
                 try

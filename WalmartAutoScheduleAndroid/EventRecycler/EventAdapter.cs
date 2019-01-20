@@ -45,10 +45,11 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
             {
                 _list = CreateList(context);
             }
-            catch
+            catch(Exception e)
             {
                 _list = new List<Day>();
                 Toast.MakeText(context, "There was an issue getting the agenda view. Please try again. If this issue occurs often, please email support!", ToastLength.Long).Show();
+                Console.WriteLine(e);
             }
         }
         public void NotifyChange(Context context)
@@ -57,10 +58,11 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
             {
                 _list = CreateList(context);
             }
-            catch
+            catch(Exception e)
             {
                 _list = new List<Day>();
                 Toast.MakeText(context, "There was an issue getting the agenda view. Please try again. If this issue occurs often, please email support!", ToastLength.Long).Show();
+                Console.WriteLine(e);
             }
             NotifyDataSetChanged();
             ScrollTo();
@@ -107,17 +109,25 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
             //add the current week object for each week
             int currentweek = 0;
             List<Day> tempAfterWeeks = new List<Day>();
+            Day workingHeader = null;
             for(int i = 0; i < temp.Count; i++)
             {
                 int getweek = Utilities.GetWalmartWeek(temp[i].BackupStart);
                 if(getweek != currentweek)
                 {
                     currentweek = getweek;
-                    tempAfterWeeks.Add(new Day()
+                    workingHeader = new Day()
                     {
                         DayId = -2,
-                        Shift = $"Week {getweek.ToString()}"
-                    });
+                        Shift = $"Week {getweek.ToString()}",
+                        TotalHours = temp[i].GetTotalHours()
+                    };
+                    tempAfterWeeks.Add(workingHeader);
+                }
+                else
+                {
+                    if(workingHeader != null)
+                    tempAfterWeeks.First(f => f.Shift == workingHeader.Shift).TotalHours += temp[i].GetTotalHours();
                 }
                 tempAfterWeeks.Add(temp[i]);
             }
@@ -188,7 +198,7 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
                 {
                     h.MainCard.Visibility = ViewStates.Gone;
                     h.HeaderView.Visibility = ViewStates.Visible;
-                    h.HeaderText.Text = obj.Shift;
+                    h.HeaderText.Text = obj.Shift + " || " + obj.TotalHours + " Hours";
                 }
                 else
                 {

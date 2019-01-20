@@ -5735,8 +5735,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f09005c
 			public const int action_mode_close_button = 2131296348;
 			
-			// aapt resource value: 0x7f0900dc
-			public const int action_settings = 2131296476;
+			// aapt resource value: 0x7f0900dd
+			public const int action_settings = 2131296477;
 			
 			// aapt resource value: 0x7f0900b3
 			public const int action_text = 2131296435;
@@ -5939,6 +5939,9 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f090058
 			public const int forever = 2131296344;
 			
+			// aapt resource value: 0x7f0900d8
+			public const int fragment_container = 2131296472;
+			
 			// aapt resource value: 0x7f09000a
 			public const int ghost_view = 2131296266;
 			
@@ -6008,8 +6011,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f0900a3
 			public const int main = 2131296419;
 			
-			// aapt resource value: 0x7f0900da
-			public const int masked = 2131296474;
+			// aapt resource value: 0x7f0900db
+			public const int masked = 2131296475;
 			
 			// aapt resource value: 0x7f0900d7
 			public const int meal = 2131296471;
@@ -6017,8 +6020,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f0900b7
 			public const int media_actions = 2131296439;
 			
-			// aapt resource value: 0x7f0900db
-			public const int menu_about = 2131296475;
+			// aapt resource value: 0x7f0900dc
+			public const int menu_about = 2131296476;
 			
 			// aapt resource value: 0x7f0900c5
 			public const int menurow_square = 2131296453;
@@ -6026,8 +6029,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f0900c6
 			public const int menurow_title = 2131296454;
 			
-			// aapt resource value: 0x7f0900d8
-			public const int message = 2131296472;
+			// aapt resource value: 0x7f0900d9
+			public const int message = 2131296473;
 			
 			// aapt resource value: 0x7f090031
 			public const int middle = 2131296305;
@@ -6317,8 +6320,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f0900a5
 			public const int view_pager = 2131296421;
 			
-			// aapt resource value: 0x7f0900d9
-			public const int visible = 2131296473;
+			// aapt resource value: 0x7f0900da
+			public const int visible = 2131296474;
 			
 			// aapt resource value: 0x7f09003c
 			public const int withText = 2131296316;
@@ -6659,10 +6662,13 @@ namespace WalmartAutoScheduleAndroid
 			public const int select_dialog_singlechoice_material = 2130968666;
 			
 			// aapt resource value: 0x7f04005b
-			public const int support_simple_spinner_dropdown_item = 2130968667;
+			public const int settings_toolbar = 2130968667;
 			
 			// aapt resource value: 0x7f04005c
-			public const int tooltip = 2130968668;
+			public const int support_simple_spinner_dropdown_item = 2130968668;
+			
+			// aapt resource value: 0x7f04005d
+			public const int tooltip = 2130968669;
 			
 			static Layout()
 			{

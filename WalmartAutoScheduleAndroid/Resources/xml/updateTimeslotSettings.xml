@@ -6,7 +6,8 @@
         android:title="Shift" />
     <EditTextPreference
         android:key="meal"
-        android:title="Meal Time" />
+        android:title="Meal Time"
+        android:summary="If you want this to adjust the weekly total hours, use the format such as 12pm-1pm or 12:30pm-1:30pm. All other formats will be ignored."/>
     <Preference
       android:key="starttime"
       android:title="Shift Start"/>

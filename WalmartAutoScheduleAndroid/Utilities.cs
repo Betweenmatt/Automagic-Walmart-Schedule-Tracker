@@ -55,8 +55,8 @@ namespace WalmartAutoScheduleAndroid
                     break;
             }
             TimeSpan difference = date - febfirst;
-
-            return ((int)difference.TotalDays / 7) + 1;
+            var output = ((int)difference.TotalDays / 7) + 1;
+            return output > 52 ? 1 : output;//quick fix for the week 53 bug
         }
     }
 }

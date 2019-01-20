@@ -73,6 +73,7 @@
     <Compile Include="AppRateReminder.cs" />
     <Compile Include="EventRecycler\EventAdapter.cs" />
     <Compile Include="EventRecycler\EventViewHolder.cs" />
+    <Compile Include="FiveTapListener.cs" />
     <Compile Include="Fragments\BaseIntroFragment.cs" />
     <Compile Include="NotificationFactory.cs" />
     <Compile Include="ReminderService.cs" />
@@ -241,6 +242,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_updateTimeslotCompat.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\settings_toolbar.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

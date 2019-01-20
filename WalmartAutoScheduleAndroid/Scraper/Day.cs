@@ -28,6 +28,8 @@ namespace WalmartAutoScheduleAndroid.Scraper
         public string Reminder { get; set; }
         public int OverrideColor { get; set; } = -1;
         public bool Ignore { get; set; }
+        [Ignore]
+        public double TotalHours { get; set; }
 
         public bool ManualAdjustment { get; set; }
         public DateTime BackupStart { get; set; }
@@ -134,6 +136,43 @@ namespace WalmartAutoScheduleAndroid.Scraper
             var obj = new DateTimeConverter(arr).Convert();
             return obj;
         }
+        public double GetTotalHours()
+        {
+            if (IsError || Ignore || DayId == -1 || DayId == -2)
+                return 0;
+            var diff = End - Start;
+            return diff.TotalHours - GetMealTime();
+        }
+        private double GetMealTime()
+        {
+            if (!Meal.Any(char.IsDigit))
+                return 0;
+
+            var obj = Meal.ToLower().Replace("meal", "").Replace("\n", "").Replace("\t", "").Replace("\r", "").Replace(" ", "");
+            try
+            {
+                var split = obj.Split('-');
+                var zoneS = "AM";
+                var zoneE = "AM";
+                if (split[0].ElementAt(split[0].Length - 2).ToString() == "p")
+                    zoneS = "PM";
+                if (split[1].ElementAt(split[1].Length - 2).ToString() == "p")
+                    zoneE = "PM";
+
+                var startTimeSplit = split[0].Replace("am", "").Replace("pm", "").Split(':');
+                var endTimeSplit = split[1].Replace("am", "").Replace("pm", "").Split(':');
+
+                var arrS = new string[] { startTimeSplit[0], (startTimeSplit.Length > 1) ? startTimeSplit[1] : "00", zoneS };
+                var arrE = new string[] { endTimeSplit[0], (endTimeSplit.Length > 1) ? endTimeSplit[1] : "00", zoneE };
+                var startObj = new DateTimeConverter(arrS).Convert();
+                var endObj = new DateTimeConverter(arrE).Convert();
+                var timespan = endObj - startObj;
+                return timespan.TotalHours;
+            }
+            catch{
+                return 0;
+            }
+        }
         public override string ToString()
         {
             return $"{Start.ToString()}-{End.ToString()}";
@@ -149,13 +188,25 @@ namespace WalmartAutoScheduleAndroid.Scraper
             public int Year { get; }
             public DateTimeConverter(string[] s)
             {
-                Year = int.Parse(s[0]);
-                Month = int.Parse(s[1]);
-                Day = int.Parse(s[2]);
+                if (s.Length == 6)
+                {
+                    Year = int.Parse(s[0]);
+                    Month = int.Parse(s[1]);
+                    Day = int.Parse(s[2]);
 
-                Hour = int.Parse(s[3]);
-                Minute = int.Parse(s[4]);
-                Zone = s[5];
+                    Hour = int.Parse(s[3]);
+                    Minute = int.Parse(s[4]);
+                    Zone = s[5];
+                }
+                else if(s.Length == 3)
+                {
+                    Year = 2069;
+                    Month = 6;
+                    Day = 6;
+                    Hour = int.Parse(s[0]);
+                    Minute = int.Parse(s[1]);
+                    Zone = s[2];
+                }
             }
             public override string ToString()
             {

@@ -60,10 +60,25 @@ namespace WalmartAutoScheduleAndroid.Activities
             errorNotification = (SwitchPreference)FindPreference("errornotification");
             reminderList = (ListPreference)FindPreference("reminder");
             showDaysOffSwitch = (SwitchPreference)FindPreference("showDaysOff");
-            Preference deleteAllEvents = (Preference)FindPreference("deleteAllEvents");
+            Preference deleteAllEvents = FindPreference("deleteAllEvents");
             Preference support = FindPreference("support");
             Preference loginButton = FindPreference("loginButton");
+            Preference about = FindPreference("about");
 
+            
+            about.OnPreferenceClickListener = new FiveTapListener(()=>
+            {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this.Activity);
+                dialog.SetTitle("Confirm");
+                dialog.SetCancelable(false);
+                dialog.SetMessage("Are you sure you want to do this? This action will delete all the events in your calendar that have the same name as the name you have set in settings. This may cause unwanted behavior, and may take multiple tries to get rid of all the events. Only use this as a last result! The app will hang while the operation happens.");
+                dialog.SetNegativeButton("No", (ss, ee) => { });
+                dialog.SetPositiveButton("Yes", (ss, ee) =>
+                {
+                    new CalManager(Utilities.CheckCalendarPermissions(this.Context)).DeleteAllEntriesWithName(this.Activity, new SettingsObject());
+                });
+                dialog.Show();
+            });
             loginButton.PreferenceClick += (s, e) =>
             {
                 var dialog = new Dialog(this.Activity);
@@ -249,12 +264,12 @@ namespace WalmartAutoScheduleAndroid.Activities
         }
         public override void OnDestroy()
         {
-            PrefToSettings();
+            //PrefToSettings();
             base.OnDestroy();
         }
         public override void OnPause()
         {
-            PrefToSettings();
+           PrefToSettings();
             base.OnPause();
         }
         private void PrefToSettings()

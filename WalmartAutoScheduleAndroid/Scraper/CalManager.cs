@@ -63,6 +63,47 @@ namespace WalmartAutoScheduleAndroid
             db.DeleteAll<Day>();
             Toast.MakeText(context, "All entries deleted", ToastLength.Long).Show();
         }
+
+        public void DeleteAllEntriesWithName(Context context, SettingsObject settings)
+        {
+            try
+            {
+                List<string> listOfIds = new List<string>();
+                ICursor cursor = context.ContentResolver.Query(
+                    CalendarContract.Events.ContentUri, new string[] {
+                    CalendarContract.Events.InterfaceConsts.CalendarId,
+                    CalendarContract.Events.InterfaceConsts.Title,
+                    CalendarContract.Events.InterfaceConsts.Id
+                    }, null, null, null);
+                cursor.MoveToFirst();
+                for (int i = 0; i < cursor.Count; i++)
+                {
+                    long calid = cursor.GetLong(0);
+                    string title = cursor.GetString(1);
+                    string id = cursor.GetString(2);
+
+                    if (calid == settings.CalendarId)
+                    {
+                        if (title == settings.EventTitle)
+                        {
+                            listOfIds.Add(id);
+                        }
+                    }
+                    cursor.MoveToNext();
+                }
+                cursor.Close();
+                foreach (var x in listOfIds)
+                {
+                    var eventUri = ContentUris.WithAppendedId(CalendarContract.Events.ContentUri, long.Parse(x));
+                    context.ContentResolver.Delete(eventUri, null, null);
+                }
+                Toast.MakeText(context, "All events have been deleted.", ToastLength.Short).Show();
+            }catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
         public void Execute(Context context, SettingsObject settings, List<Day> days)
         {
             if (!_permissions)
@@ -132,7 +173,7 @@ namespace WalmartAutoScheduleAndroid
             //check for deleted shifts
             foreach (var x in tbl)
             {
-                if (x.Start.Date < DateTime.Now.Date)
+                if (x.Start.Date < DateTime.Now.Date || x.ManualAdjustment)
                     continue;
                 var getdate = days.FirstOrDefault(f => f.Start.Date == x.Start.Date);
                 if (getdate == null)

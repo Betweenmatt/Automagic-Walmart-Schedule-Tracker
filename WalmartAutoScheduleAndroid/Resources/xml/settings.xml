@@ -87,4 +87,8 @@
     android:title="Support"
     android:key="support"
     android:summary="This will open up your email application if you have any questions/comments/issues!\n\nKeep in mind, this application was created by a Walmart Associate in his free time, so any concerns about your schedule should be brought to your manager! This application only takes the information from WalmartOne."/>
+  <Preference
+    android:title="About"
+    android:key="about"
+    android:summary="Version: 1.0.8\nCreated by Matthew Andrews\nReddit: u/Betweenirl"/>
 </PreferenceScreen>

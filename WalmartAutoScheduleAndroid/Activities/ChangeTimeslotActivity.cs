@@ -149,6 +149,7 @@ namespace WalmartAutoScheduleAndroid.Activities
                 workingobj.Shift = shift.Text == "" ? workingobj.Shift : shift.Text;
                 workingobj.Meal = meal.Text == "" ? workingobj.Meal : meal.Text;
                 workingobj.OverrideColor = color.GetIndex();
+                workingobj.ManualAdjustment = true;
                 new CalManager(Utilities.CheckCalendarPermissions(this.Activity)).ChangeTimeslot(this.Activity, new SettingsObject(), workingobj,color.GetIndex());
                 this.Activity.Finish();
             };

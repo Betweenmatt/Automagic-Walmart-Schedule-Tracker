@@ -149,8 +149,7 @@ namespace WalmartAutoScheduleAndroid
                 editor.PutInt(Consts.DayOffColorId, _dayOffColorId = DayOffColorId);
             if (ServerStatus != _serverStatus)
                 editor.PutInt(Consts.ServerStatusString, (int)(_serverStatus = ServerStatus));
-
-            Console.WriteLine($"COUNTS: {PushNotificationIds.Count} =/= {_pushNotificationIds.Count}");
+            
             if (PushNotificationIds.Count != _pushNotificationIds.Count)
             {
                 var json = JsonConvert.SerializeObject(PushNotificationIds);

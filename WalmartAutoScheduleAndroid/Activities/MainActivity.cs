@@ -54,7 +54,7 @@ namespace WalmartAutoScheduleAndroid
             }
             else if(Settings.UserName == "")
             {
-                Toast.MakeText(this, "It appears your settings aren't set, lets go to the settings menu.", ToastLength.Long).Show();
+                Toast.MakeText(this, "It appears your username and password aren't set, lets go to the settings menu.", ToastLength.Long).Show();
                 if (!Utilities.CheckCalendarPermissions(this))
                     RequestPermissionsIfAllowed(new string[] { Android.Manifest.Permission.ReadCalendar, Android.Manifest.Permission.WriteCalendar }, 0);
                 else
@@ -74,12 +74,12 @@ namespace WalmartAutoScheduleAndroid
                 if (e.IsChecked)
                 {
                     EventService.StartService(this);
-                    Toast.MakeText(this, "The automagic service has started.\nPlease wait a few minutes for it to complete!", ToastLength.Long).Show();
+                    Toast.MakeText(this, "The automagic service has started.\nPlease wait a few minutes for it to complete!", ToastLength.Short).Show();
                 }
                 else
                 {
                     EventService.StopService(this);
-                    Toast.MakeText(this, "The automagic service has been stopped.", ToastLength.Long).Show();
+                    Toast.MakeText(this, "The automagic service has been stopped.", ToastLength.Short).Show();
                 }
             };
             
@@ -113,6 +113,12 @@ namespace WalmartAutoScheduleAndroid
         protected override void OnResume()
         {
             base.OnResume();
+            if (Settings.UserName == "")
+            {
+                Toast.MakeText(this, "It appears your username and password aren't set, lets go to the settings menu.", ToastLength.Long).Show();
+                if (Utilities.CheckCalendarPermissions(this))
+                    OpenSettings();
+            }
             RefreshListAdapter();
             SetStatus();
         }

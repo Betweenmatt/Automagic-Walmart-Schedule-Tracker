@@ -19,8 +19,8 @@ namespace WalmartAutoScheduleAndroid
                Permission = "android.permission.BIND_JOB_SERVICE")]
     class ServerCheckService : JobService
     {
-        //const int _periodic = (60 * 1000) * 60 * 3;
-        const int _periodic = (60 * 1000) * 1;
+        const int _periodic = (60 * 1000) * 60 * 1;
+        //const int _periodic = (60 * 1000) * 1;
         const int _jobId = 481516;
         public static void StartService(Context context)
         {

@@ -149,8 +149,13 @@ namespace WalmartAutoScheduleAndroid
                 editor.PutInt(Consts.DayOffColorId, _dayOffColorId = DayOffColorId);
             if (ServerStatus != _serverStatus)
                 editor.PutInt(Consts.ServerStatusString, (int)(_serverStatus = ServerStatus));
-            if (PushNotificationIds != _pushNotificationIds)
-                editor.PutString(Consts.PushNotificationIds, JsonConvert.SerializeObject(_pushNotificationIds = PushNotificationIds));
+
+            Console.WriteLine($"COUNTS: {PushNotificationIds.Count} =/= {_pushNotificationIds.Count}");
+            if (PushNotificationIds.Count != _pushNotificationIds.Count)
+            {
+                var json = JsonConvert.SerializeObject(PushNotificationIds);
+                editor.PutString(Consts.PushNotificationIds, JsonConvert.SerializeObject(_pushNotificationIds = JsonConvert.DeserializeObject<List<int>>(json)));
+            }
             editor.Apply();
         }
 
@@ -173,8 +178,13 @@ namespace WalmartAutoScheduleAndroid
             ShowDaysOff = _showDaysOff = settings.GetBoolean(Consts.ShowDaysOff, Consts.ShowDaysOffDef);
             DayOffColorId = _dayOffColorId = settings.GetInt(Consts.DayOffColorId, Consts.DayOffColorIdDef);
             ServerStatus = _serverStatus = (ServerStatus)settings.GetInt(Consts.ServerStatusString, (int)Consts.ServerStatusDef);
-            PushNotificationIds = _pushNotificationIds = JsonConvert.DeserializeObject<List<int>>(settings.GetString(Consts.PushNotificationIds, Consts.PushNotificationIdsDef));
-            
+            PushNotificationIds = JsonConvert.DeserializeObject<List<int>>(settings.GetString(Consts.PushNotificationIds, Consts.PushNotificationIdsDef));
+            _pushNotificationIds = JsonConvert.DeserializeObject<List<int>>(settings.GetString(Consts.PushNotificationIds, Consts.PushNotificationIdsDef));
+            if (PushNotificationIds == null)
+            {
+                PushNotificationIds = new List<int>();
+                _pushNotificationIds = new List<int>();
+            }
         }
 
         private static ISharedPreferences GetSettings(Context context)

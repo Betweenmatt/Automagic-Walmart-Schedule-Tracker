@@ -83,6 +83,7 @@ namespace WalmartAutoScheduleAndroid
             {
                 new NotificationFactory(this.ApplicationContext, obj.Title, obj.Content, NotificationFlag.None, PendingIntentType.MainActivity);
                 Settings.PushNotificationIds.Add(obj.Id);
+                
                 Settings.SaveAllSettings(this.ApplicationContext);
             }
         }

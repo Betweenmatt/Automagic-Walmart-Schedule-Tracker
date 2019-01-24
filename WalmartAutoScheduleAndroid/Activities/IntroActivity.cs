@@ -50,6 +50,7 @@ namespace WalmartAutoScheduleAndroid.Activities
             Settings.IntroComplete = true;
             Settings.SaveAllSettings(this);
             StartActivity(new Intent(this, typeof(MainActivity)));
+            Finish();
         }
     }
 }

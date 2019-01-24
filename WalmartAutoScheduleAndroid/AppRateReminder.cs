@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using WalmartAutoScheduleAndroid.Activities;
 
 namespace WalmartAutoScheduleAndroid
 {
@@ -24,14 +25,47 @@ namespace WalmartAutoScheduleAndroid
         private const string _dateFirstLaunched = "dateFirstLaunch";
         private const string _appRateReminder = "appRateReminder";
 
+        private const string _changesAreComingReminder = "changesAreComingReminder";
+
+        public static bool HasChangesAreComingTriggered(Context context)
+        {
+            ISharedPreferences prefs = context.GetSharedPreferences(_appRateReminder, 0);
+            return prefs.GetBoolean(_changesAreComingReminder, false);
+        }
+
+        public static void SetChangesAreComingTriggered(Context context)
+        {
+            ISharedPreferences prefs = context.GetSharedPreferences(_appRateReminder, 0);
+
+            bool changesAreComingBool = prefs.GetBoolean(_changesAreComingReminder, false);
+            ISharedPreferencesEditor editor = prefs.Edit();
+            if (!changesAreComingBool)
+            {
+                editor.PutBoolean(_changesAreComingReminder, true);
+                editor.Commit();
+            }
+        }
+
         public static void Launched(Context context)
         {
             ISharedPreferences prefs = context.GetSharedPreferences(_appRateReminder, 0);
+
+            bool changesAreComingBool = prefs.GetBoolean(_changesAreComingReminder, false);
+            ISharedPreferencesEditor editor = prefs.Edit();
+            if (!changesAreComingBool)
+            {
+                ChangesAreComingDialog(context, editor);
+            }
+
+
+
+
+
+
             if (prefs.GetBoolean(_dontShowAgain, false))
             {
                 return;
             }
-            ISharedPreferencesEditor editor = prefs.Edit();
 
             long launchCount = prefs.GetLong(_launchCount, 0) + 1;
             editor.PutLong(_launchCount, launchCount);
@@ -50,6 +84,8 @@ namespace WalmartAutoScheduleAndroid
                     ShowRateDialog(context, editor);
                 }
             }
+                
+
             editor.Commit();
         }
         public static void ShowRateDialog(Context context, ISharedPreferencesEditor editor)
@@ -70,6 +106,25 @@ namespace WalmartAutoScheduleAndroid
              });
             dialog.SetNeutralButton("Remind me later", (s, e) =>
             {});
+            dialog.Show();
+        }
+        public static void ChangesAreComingDialog(Context context, ISharedPreferencesEditor editor)
+        {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+            dialog.SetTitle($"Important!");
+            dialog.SetCancelable(false);
+            dialog.SetMessage("There are some important changes coming that will stop this app from working soon. Please click Ok to read more about them!");
+            dialog.SetPositiveButton("Ok", (s, e) =>
+            {
+                //this is hijacking the changes dialog to add push/status notifications flags to settings lol
+                //since they will be automatically off for anyone who updates the app 
+                Settings.NotificationFlags |= NotificationFlag.Status | NotificationFlag.Push;
+                Settings.SaveAllSettings(context);
+                //
+                editor.PutBoolean(_changesAreComingReminder, false);
+                editor.Commit();
+                context.StartActivity(new Intent(context, typeof(ChangesActivity)));
+            });
             dialog.Show();
         }
     }

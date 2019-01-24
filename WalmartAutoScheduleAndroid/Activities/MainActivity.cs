@@ -33,18 +33,35 @@ namespace WalmartAutoScheduleAndroid
 
             Settings.LoadAllSettings(this);
 
+            
+
+            //create notification channel on 8.0 and above
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                string name = "Automagic Walmart Schedule Tracker Notification Channel";
+                string description = "Notification channel for Automagic Walmart Schedule Tracker";
+                NotificationChannel channel = new NotificationChannel(NotificationFactory.Channel, name, NotificationImportance.Default);
+                channel.Description = description;
+
+                NotificationManager notifManager = (NotificationManager)GetSystemService(Java.Lang.Class.FromType(typeof(NotificationManager)));
+                notifManager.CreateNotificationChannel(channel);
+            }
+
             if (!Settings.IntroComplete)
             {
                 StartActivity(new Android.Content.Intent(this, typeof(IntroActivity)));
+                Finish();
             }
             else if(Settings.UserName == "")
             {
                 Toast.MakeText(this, "It appears your settings aren't set, lets go to the settings menu.", ToastLength.Long).Show();
-                if(!Utilities.CheckCalendarPermissions(this))
+                if (!Utilities.CheckCalendarPermissions(this))
                     RequestPermissionsIfAllowed(new string[] { Android.Manifest.Permission.ReadCalendar, Android.Manifest.Permission.WriteCalendar }, 0);
-                OpenSettings();
+                else
+                {
+                    OpenSettings();
+                }
             }
-
             RequestPermissionsIfAllowed(new string[] { Android.Manifest.Permission.ReadCalendar, Android.Manifest.Permission.WriteCalendar }, 0);
 
 
@@ -65,22 +82,12 @@ namespace WalmartAutoScheduleAndroid
                     Toast.MakeText(this, "The automagic service has been stopped.", ToastLength.Long).Show();
                 }
             };
-            //create notification channel on 8.0 and above
-            if(Build.VERSION.SdkInt >= BuildVersionCodes.O)
-            {
-                string name = "Automagic Walmart Schedule Tracker Notification Channel";
-                string description = "Notification channel for Automagic Walmart Schedule Tracker";
-                NotificationChannel channel = new NotificationChannel(NotificationFactory.Channel, name, NotificationImportance.Default);
-                channel.Description = description;
-
-                NotificationManager notifManager = (NotificationManager)GetSystemService(Java.Lang.Class.FromType(typeof(NotificationManager)));
-                notifManager.CreateNotificationChannel(channel);
-            }
             
             var recycler = FindViewById<Android.Support.V7.Widget.RecyclerView>(Resource.Id.agendaRecycler);
             recycler.SetLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.Vertical, false));
             _adapter = new EventAdapter(this);
             recycler.SetAdapter(_adapter);
+            ServerCheckService.StartService(this);
             SetStatus();
             AppRateReminder.Launched(this);
 		}
@@ -150,6 +157,9 @@ namespace WalmartAutoScheduleAndroid
             {
                 OpenSettings();
                 return true;
+            }else if(id == Resource.Id.action_changes)
+            {
+                StartActivity(new Android.Content.Intent(this, typeof(ChangesActivity)));
             }
 
             return base.OnOptionsItemSelected(item);

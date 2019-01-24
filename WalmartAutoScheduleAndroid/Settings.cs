@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Newtonsoft.Json;
 using WalmartAutoScheduleAndroid.Scraper;
 
 namespace WalmartAutoScheduleAndroid
@@ -61,6 +62,17 @@ namespace WalmartAutoScheduleAndroid
         public static List<CalendarObject> CalendarObjects { get; set; }
 
 
+        public static ServerStatus ServerStatus { get; set; }
+        private static ServerStatus _serverStatus;
+
+        public static List<int> PushNotificationIds { get; set; }
+        private static List<int> _pushNotificationIds;
+
+
+
+        public const string Version = "1.0.9";
+        public const int VersionCode = 10;
+
 
         internal class Consts
         {
@@ -81,7 +93,9 @@ namespace WalmartAutoScheduleAndroid
                 NotificationFlag.AddShift |
                 NotificationFlag.DeleteShift |
                 NotificationFlag.UpdateShift |
-                NotificationFlag.Error;
+                NotificationFlag.Error |
+                NotificationFlag.Status |
+                NotificationFlag.Push;
             public const string IntroComplete = "IntroComplete";
             public const bool IntroCompleteDef = false;
             public const string ServiceRunning = "ServiceRunning";
@@ -96,6 +110,10 @@ namespace WalmartAutoScheduleAndroid
             public const bool ShowDaysOffDef = false;
             public const string DayOffColorId = "DayOffColorId";
             public const int DayOffColorIdDef = 7;
+            public const string ServerStatusString = "ServerStatus";
+            public const ServerStatus ServerStatusDef = ServerStatus.Ok;
+            public const string PushNotificationIds = "PushNotificationIds";
+            public const string PushNotificationIdsDef = "";
         }
 
         public static void SaveAllSettings(Context context)
@@ -129,6 +147,10 @@ namespace WalmartAutoScheduleAndroid
                 editor.PutBoolean(Consts.ShowDaysOff, _showDaysOff = ShowDaysOff);
             if (DayOffColorId != _dayOffColorId)
                 editor.PutInt(Consts.DayOffColorId, _dayOffColorId = DayOffColorId);
+            if (ServerStatus != _serverStatus)
+                editor.PutInt(Consts.ServerStatusString, (int)(_serverStatus = ServerStatus));
+            if (PushNotificationIds != _pushNotificationIds)
+                editor.PutString(Consts.PushNotificationIds, JsonConvert.SerializeObject(_pushNotificationIds = PushNotificationIds));
             editor.Apply();
         }
 
@@ -150,6 +172,9 @@ namespace WalmartAutoScheduleAndroid
             IsCalendarGoogle = _isCalendarGoogle = settings.GetBoolean(Consts.IsCalendarGoogle, Consts.IsCalendarGoogleDef);
             ShowDaysOff = _showDaysOff = settings.GetBoolean(Consts.ShowDaysOff, Consts.ShowDaysOffDef);
             DayOffColorId = _dayOffColorId = settings.GetInt(Consts.DayOffColorId, Consts.DayOffColorIdDef);
+            ServerStatus = _serverStatus = (ServerStatus)settings.GetInt(Consts.ServerStatusString, (int)Consts.ServerStatusDef);
+            PushNotificationIds = _pushNotificationIds = JsonConvert.DeserializeObject<List<int>>(settings.GetString(Consts.PushNotificationIds, Consts.PushNotificationIdsDef));
+            
         }
 
         private static ISharedPreferences GetSettings(Context context)

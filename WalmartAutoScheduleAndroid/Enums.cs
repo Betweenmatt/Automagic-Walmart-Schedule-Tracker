@@ -19,7 +19,9 @@ namespace WalmartAutoScheduleAndroid
         UpdateShift = 1 << 0,
         DeleteShift = 1 << 1,
         AddShift = 1 << 2,
-        Error = 1 << 3
+        Error = 1 << 3,
+        Status = 1 << 4,
+        Push = 1 << 5
     }
     enum EventDataType
     {
@@ -40,5 +42,12 @@ namespace WalmartAutoScheduleAndroid
         Online,
         Offline,
         LoginInfoWrong
+    }
+    enum ServerStatus
+    {
+        Error = 500,
+        Ok = 200,
+        Update = 100,
+        Down = 300
     }
 }

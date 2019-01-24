@@ -32,7 +32,8 @@ namespace WalmartAutoScheduleAndroid.Activities
             switch (item.ItemId)
             {
                 case Android.Resource.Id.Home:
-                    NavUtils.NavigateUpFromSameTask(this);
+                    //NavUtils.NavigateUpFromSameTask(this);
+                    Finish();
                     return true;
             }
 

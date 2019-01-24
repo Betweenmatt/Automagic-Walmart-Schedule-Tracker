@@ -32,6 +32,8 @@ namespace WalmartAutoScheduleAndroid.Activities
         SwitchPreference updateNotification;
         SwitchPreference errorNotification;
         SwitchPreference showDaysOffSwitch;
+        SwitchPreference statusNotification;
+        SwitchPreference pushNotification;
         ColorPickerPreference dayOffColor;
         ListPreference reminderList;
 
@@ -57,6 +59,8 @@ namespace WalmartAutoScheduleAndroid.Activities
             addNotification = (SwitchPreference)FindPreference("addshiftnotification");
             updateNotification = (SwitchPreference)FindPreference("updateshiftnotification");
             deleteNotification = (SwitchPreference)FindPreference("deleteshiftnotification");
+            statusNotification = (SwitchPreference)FindPreference("statusnotification");
+            pushNotification = (SwitchPreference)FindPreference("pushnotification");
             errorNotification = (SwitchPreference)FindPreference("errornotification");
             reminderList = (ListPreference)FindPreference("reminder");
             showDaysOffSwitch = (SwitchPreference)FindPreference("showDaysOff");
@@ -64,6 +68,7 @@ namespace WalmartAutoScheduleAndroid.Activities
             Preference support = FindPreference("support");
             Preference loginButton = FindPreference("loginButton");
             Preference about = FindPreference("about");
+            about.Summary = $"Version:{Settings.Version}\nCreated by Matthew Andrews";
 
             
             about.OnPreferenceClickListener = new FiveTapListener(()=>
@@ -177,6 +182,14 @@ namespace WalmartAutoScheduleAndroid.Activities
                 errorNotification.Checked = true;
             else
                 errorNotification.Checked = false;
+            if (Settings.NotificationFlags.HasFlag(NotificationFlag.Status))
+                statusNotification.Checked = true;
+            else
+                statusNotification.Checked = false;
+            if (Settings.NotificationFlags.HasFlag(NotificationFlag.Push))
+                pushNotification.Checked = true;
+            else
+                pushNotification.Checked = false;
             if (Settings.ShowDaysOff)
                 showDaysOffSwitch.Checked = true;
             else
@@ -305,6 +318,10 @@ namespace WalmartAutoScheduleAndroid.Activities
                     Settings.NotificationFlags |= NotificationFlag.DeleteShift;
                 if (errorNotification.Checked)
                     Settings.NotificationFlags |= NotificationFlag.Error;
+                if (pushNotification.Checked)
+                    Settings.NotificationFlags |= NotificationFlag.Push;
+                if (statusNotification.Checked)
+                    Settings.NotificationFlags |= NotificationFlag.Status;
 
 
                 Settings.SaveAllSettings(this.Activity);

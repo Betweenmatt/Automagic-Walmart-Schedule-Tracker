@@ -76,6 +76,18 @@
       android:key="errornotification"
       android:title="Error Notifications"
       android:summary="Notify you when there is an error"/>
+
+        <SwitchPreference
+          android:defaultValue="true"
+      android:key="statusnotification"
+      android:title="Status Notifications"
+      android:summary="Notify you when there is a change in the status. This will alert you when the schedule cannot be updated from Walmart's servers."/>
+
+        <SwitchPreference
+          android:defaultValue="true"
+      android:key="pushnotification"
+      android:title="Push Notifications"
+      android:summary="These notifications are used for important information, such as when a critical update is released, or your schedule won't update for a while."/>
         </PreferenceCategory>
   <PreferenceCategory android:title="Misc">
     <Preference
@@ -89,6 +101,5 @@
     android:summary="This will open up your email application if you have any questions/comments/issues!\n\nKeep in mind, this application was created by a Walmart Associate in his free time, so any concerns about your schedule should be brought to your manager! This application only takes the information from WalmartOne."/>
   <Preference
     android:title="About"
-    android:key="about"
-    android:summary="Version: 1.0.8\nCreated by Matthew Andrews\nReddit: u/Betweenirl"/>
+    android:key="about"/>
 </PreferenceScreen>

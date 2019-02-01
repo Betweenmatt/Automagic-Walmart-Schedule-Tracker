@@ -13,16 +13,20 @@ using Android.Support.V4.Content;
 using System.Collections.Generic;
 using Android.Support.V7.Widget;
 using WalmartAutoScheduleAndroid.EventRecycler;
+using Yort.Otp;
 
 namespace WalmartAutoScheduleAndroid
 {
 	[Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
 	public class MainActivity : AppCompatActivity
 	{
+        public static OnetimePasswordGeneratorFactory _OtpFactory = OnetimePasswordGeneratorFactory.CreateFactory(true, new Sha512HashAlgorithm(), 6, TimeSpan.FromMinutes(1));
+
         private EventAdapter _adapter;
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
-			base.OnCreate(savedInstanceState);
+            
+            base.OnCreate(savedInstanceState);
 
 			SetContentView(Resource.Layout.activity_main);
 

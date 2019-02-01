@@ -68,6 +68,9 @@ namespace WalmartAutoScheduleAndroid
         public static List<int> PushNotificationIds { get; set; }
         private static List<int> _pushNotificationIds;
 
+        public static string SecretKey { get; set; }
+        private static string _secretKey;
+
 
 
         public const string Version = "1.0.9";
@@ -114,6 +117,8 @@ namespace WalmartAutoScheduleAndroid
             public const ServerStatus ServerStatusDef = ServerStatus.Ok;
             public const string PushNotificationIds = "PushNotificationIds";
             public const string PushNotificationIdsDef = "";
+            public const string SecretKey = "SecretKey";
+            public const string SecretKeyDef = "";
         }
 
         public static void SaveAllSettings(Context context)
@@ -149,6 +154,8 @@ namespace WalmartAutoScheduleAndroid
                 editor.PutInt(Consts.DayOffColorId, _dayOffColorId = DayOffColorId);
             if (ServerStatus != _serverStatus)
                 editor.PutInt(Consts.ServerStatusString, (int)(_serverStatus = ServerStatus));
+            if (SecretKey != _secretKey)
+                editor.PutString(Consts.SecretKey, _secretKey = SecretKey);
             
             if (PushNotificationIds.Count != _pushNotificationIds.Count)
             {
@@ -179,6 +186,7 @@ namespace WalmartAutoScheduleAndroid
             ServerStatus = _serverStatus = (ServerStatus)settings.GetInt(Consts.ServerStatusString, (int)Consts.ServerStatusDef);
             PushNotificationIds = JsonConvert.DeserializeObject<List<int>>(settings.GetString(Consts.PushNotificationIds, Consts.PushNotificationIdsDef));
             _pushNotificationIds = JsonConvert.DeserializeObject<List<int>>(settings.GetString(Consts.PushNotificationIds, Consts.PushNotificationIdsDef));
+            _secretKey = SecretKey = settings.GetString(Consts.SecretKey, Consts.SecretKeyDef);
             if (PushNotificationIds == null)
             {
                 PushNotificationIds = new List<int>();

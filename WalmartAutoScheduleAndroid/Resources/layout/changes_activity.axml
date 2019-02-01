@@ -14,13 +14,13 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:navigationIcon="?attr/homeAsUpIndicator" />
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/changesText" />
-    </ScrollView>
+  <EditText
+    android:id="@+id/secret"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"/>
+  <Button
+    android:id="@+id/generateButton"
+    android:text="generate"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"/>
 </LinearLayout>

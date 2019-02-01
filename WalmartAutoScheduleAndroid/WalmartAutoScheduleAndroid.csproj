@@ -158,6 +158,9 @@
     <PackageReference Include="Xamarin.Android.Support.v7.Preference">
       <Version>27.0.2</Version>
     </PackageReference>
+    <PackageReference Include="Yort.Otp">
+      <Version>1.0.5</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\arrays.xml" />

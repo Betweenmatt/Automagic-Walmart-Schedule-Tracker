@@ -92,8 +92,6 @@ namespace WalmartAutoScheduleAndroid.Activities
                 var un = dialog.FindViewById<EditText>(Resource.Id.etEmail);
                 var pw = dialog.FindViewById<EditText>(Resource.Id.etPassword);
                 var login = dialog.FindViewById<Button>(Resource.Id.btnLogin);
-                var help = dialog.FindViewById<TextView>(Resource.Id.helpLink);
-                help.MovementMethod = LinkMovementMethod.Instance;
                 //Linkify.AddLinks(help, MatchOptions.All);
                 un.Text = Settings.UserName;
                 pw.Text = Settings.Password;

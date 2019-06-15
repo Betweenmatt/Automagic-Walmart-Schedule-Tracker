@@ -12,7 +12,7 @@ using Android.Support.V7.App;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
-using Yort.Otp;
+using VipAccess;
 
 namespace WalmartAutoScheduleAndroid.Activities
 {
@@ -26,16 +26,26 @@ namespace WalmartAutoScheduleAndroid.Activities
             SetContentView(Resource.Layout.changes_activity);
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
+
+            if(Settings.OtpKey == "")
+            {
+                var rq = new GenerateRequest();
+                Settings.OtpKey = rq.GetKey();
+                Settings.OtpSecret = rq.GetSecret();
+                Settings.SaveAllSettings(this);
+            }
+
+            
             _secret = FindViewById<EditText>(Resource.Id.secret);
-            _secret.Text = Settings.SecretKey;
+            TextView output = FindViewById<TextView>(Resource.Id.otp);
+            _secret.Text = Settings.OtpKey;
             AppRateReminder.SetChangesAreComingTriggered(this);
             var generate = FindViewById<Button>(Resource.Id.generateButton);
             generate.Click += (s, e) => 
             {
-                using (var passwordGenerator = MainActivity._OtpFactory.CreateNewPasswordGenerator(OnetimePasswordSecret.FromAscii(_secret.Text)))
-                {
-                    Toast.MakeText(this, $"Password: {passwordGenerator.GeneratedPassword} valid until {((TimeBasedPasswordGenerator)passwordGenerator).ValidUntilUtc.ToLocalTime()}", ToastLength.Long).Show();
-                }
+                var goog = new GoogleAuthenticator();
+                var pin = goog.GeneratePin(Base32Encoding.ToBytes(Settings.OtpSecret));
+                output.Text = pin;
             };
         }
         public override bool OnOptionsItemSelected(IMenuItem item)

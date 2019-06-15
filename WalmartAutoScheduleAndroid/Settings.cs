@@ -71,6 +71,12 @@ namespace WalmartAutoScheduleAndroid
         public static string SecretKey { get; set; }
         private static string _secretKey;
 
+        public static string OtpKey { get; set; }
+        private static string _otpKey;
+        
+        public static string OtpSecret { get; set; }
+        private static string _otpSecret;
+
 
 
         public const string Version = "1.0.9";
@@ -119,6 +125,10 @@ namespace WalmartAutoScheduleAndroid
             public const string PushNotificationIdsDef = "";
             public const string SecretKey = "SecretKey";
             public const string SecretKeyDef = "";
+            public const string OtpKey = "OtpKey";
+            public const string OtpKeyDef = "";
+            public const string OtpSecret = "OtpSecret";
+            public const string OtpSecretDef = "";
         }
 
         public static void SaveAllSettings(Context context)
@@ -156,6 +166,10 @@ namespace WalmartAutoScheduleAndroid
                 editor.PutInt(Consts.ServerStatusString, (int)(_serverStatus = ServerStatus));
             if (SecretKey != _secretKey)
                 editor.PutString(Consts.SecretKey, _secretKey = SecretKey);
+            if (OtpKey != _otpKey)
+                editor.PutString(Consts.OtpKey, _otpKey = OtpKey);
+            if (OtpSecret != _otpSecret)
+                editor.PutString(Consts.OtpSecret, _otpSecret = OtpSecret);
             
             if (PushNotificationIds.Count != _pushNotificationIds.Count)
             {
@@ -187,6 +201,8 @@ namespace WalmartAutoScheduleAndroid
             PushNotificationIds = JsonConvert.DeserializeObject<List<int>>(settings.GetString(Consts.PushNotificationIds, Consts.PushNotificationIdsDef));
             _pushNotificationIds = JsonConvert.DeserializeObject<List<int>>(settings.GetString(Consts.PushNotificationIds, Consts.PushNotificationIdsDef));
             _secretKey = SecretKey = settings.GetString(Consts.SecretKey, Consts.SecretKeyDef);
+            _otpKey = OtpKey = settings.GetString(Consts.OtpKey, Consts.OtpKeyDef);
+            _otpSecret = OtpSecret = settings.GetString(Consts.OtpSecret, Consts.OtpSecretDef);
             if (PushNotificationIds == null)
             {
                 PushNotificationIds = new List<int>();

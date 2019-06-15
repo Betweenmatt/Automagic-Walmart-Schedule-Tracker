@@ -87,6 +87,29 @@ namespace WalmartAutoScheduleAndroid.Scraper
                 Identifier = this.ToString();
             }
         }
+        public Day(WalmartApi.Schedule sched)
+        {
+            var jobEvent = sched.Events.FirstOrDefault(f => f.Type == WalmartApi.TypeEnum.Job);
+            var mealEvent = sched.Events.FirstOrDefault(f => f.Type == WalmartApi.TypeEnum.Meal);
+            if (jobEvent != null)
+            {
+                Shift = jobEvent.JobDescription;
+                Start = DateTime.Parse(jobEvent.StartTime);
+                End = DateTime.Parse(jobEvent.EndTime);
+                if (End < Start)
+                    End = End.AddDays(1);
+                BackupStart = Start;
+                BackupEnd = End;
+            }
+            if (mealEvent != null)
+            {
+                var mealStart = DateTime.Parse(mealEvent.StartTime);
+                var mealEnd = DateTime.Parse(mealEvent.EndTime);
+
+                Meal = $"Meal {mealStart.ToString("h:mm tt")} - {mealEnd.ToString("h:mm tt")}";
+            }
+            Identifier = this.ToString();
+        }
         /// <summary>
         /// A quick test case method for quickly seeing the changes brought on by updated schedules.
         /// this should incur schedule updates at random, but common intervals to see how the app

@@ -13,15 +13,12 @@ using Android.Support.V4.Content;
 using System.Collections.Generic;
 using Android.Support.V7.Widget;
 using WalmartAutoScheduleAndroid.EventRecycler;
-using Yort.Otp;
 
 namespace WalmartAutoScheduleAndroid
 {
 	[Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
 	public class MainActivity : AppCompatActivity
 	{
-        public static OnetimePasswordGeneratorFactory _OtpFactory = OnetimePasswordGeneratorFactory.CreateFactory(true, new Sha512HashAlgorithm(), 6, TimeSpan.FromMinutes(1));
-
         private EventAdapter _adapter;
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -66,6 +63,7 @@ namespace WalmartAutoScheduleAndroid
                     OpenSettings();
                 }
             }
+            
             RequestPermissionsIfAllowed(new string[] { Android.Manifest.Permission.ReadCalendar, Android.Manifest.Permission.WriteCalendar }, 0);
 
 
@@ -117,12 +115,12 @@ namespace WalmartAutoScheduleAndroid
         protected override void OnResume()
         {
             base.OnResume();
-            if (Settings.UserName == "")
+            /*if (Settings.UserName == "")
             {
                 Toast.MakeText(this, "It appears your username and password aren't set, lets go to the settings menu.", ToastLength.Long).Show();
                 if (Utilities.CheckCalendarPermissions(this))
                     OpenSettings();
-            }
+            }*/
             RefreshListAdapter();
             SetStatus();
         }

@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WMASLib", "WMASLib\WMASLib.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorPicker", "ColorPicker\ColorPicker.csproj", "{CBEF0F74-0A30-48D7-A128-63327DFBD217}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VipAccess", "VipAccess\VipAccess.csproj", "{3F92D850-B4B7-4A29-AFDE-3D15CA79213A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingConsoleProject", "TestingConsoleProject\TestingConsoleProject.csproj", "{6949203A-2740-4B51-AFE1-521ACCCAC53B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +39,14 @@ Global
 		{CBEF0F74-0A30-48D7-A128-63327DFBD217}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBEF0F74-0A30-48D7-A128-63327DFBD217}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBEF0F74-0A30-48D7-A128-63327DFBD217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F92D850-B4B7-4A29-AFDE-3D15CA79213A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F92D850-B4B7-4A29-AFDE-3D15CA79213A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F92D850-B4B7-4A29-AFDE-3D15CA79213A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F92D850-B4B7-4A29-AFDE-3D15CA79213A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6949203A-2740-4B51-AFE1-521ACCCAC53B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6949203A-2740-4B51-AFE1-521ACCCAC53B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6949203A-2740-4B51-AFE1-521ACCCAC53B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6949203A-2740-4B51-AFE1-521ACCCAC53B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

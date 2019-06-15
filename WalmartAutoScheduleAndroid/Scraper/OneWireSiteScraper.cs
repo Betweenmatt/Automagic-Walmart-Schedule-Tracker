@@ -11,35 +11,21 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Newtonsoft.Json;
-using WalmartApi;
 
 namespace WalmartAutoScheduleAndroid.Scraper
 {
-    class SiteScraper
+    class OneWireSiteScraper
     {
         private SettingsObject _settings;
-        private string _data;
-        public SiteScraper(SettingsObject settings)
+        public OneWireSiteScraper(SettingsObject settings)
         {
             _settings = settings;
         }
-        private string GetUri(string win, string store)
-        {
-            win = win.Replace(" ", "");
-            if (store == null || store == "")
-                store = "100";
-            return $"https://one.walmart.com/bin/adp/snapshot.api=schedule.win={win}.store={store}.json";
-        }
-        /// <summary>
-        /// Returns only the login status. Use Execute for returning data.
-        /// </summary>
-        /// <returns></returns>
+
         public SiteScraperReturnObject LoginCheck(string page = null)
         {
-            /*
             System.Diagnostics.Debug.WriteLine("starting login");
-            if(page == null)
+            if (page == null)
                 page = GetSiteData();
             //Console.WriteLine(page);
             System.Diagnostics.Debug.WriteLine("login complete");
@@ -54,35 +40,10 @@ namespace WalmartAutoScheduleAndroid.Scraper
                 return new SiteScraperReturnObject(SiteScraperReturnStatus.Error, null);
             }
             return new SiteScraperReturnObject(SiteScraperReturnStatus.Success, null);
-            */
-            if (page == null) page = GetData();
-            if (page == "")
-            {
-                return new SiteScraperReturnObject(SiteScraperReturnStatus.Error, null);
-            } else if (page.Contains("LoginNameNotFound") || page.Contains("\"status\":500"))
-            {
-                return new SiteScraperReturnObject(SiteScraperReturnStatus.WrongLogin, null);
-            }
-            return new SiteScraperReturnObject(SiteScraperReturnStatus.Success, null);
         }
 
         public SiteScraperReturnObject Execute()
         {
-            string page = GetData();
-            var login = LoginCheck(page);
-            if (login.Status == SiteScraperReturnStatus.Error || login.Status == SiteScraperReturnStatus.WrongLogin)
-                return login;
-            var obj = JsonConvert.DeserializeObject<WmJsonObject>(page);
-            List<Day> dayList = new List<Day>();
-            foreach (var week in obj.Payload.Associates[0].Weeks)
-            {
-                foreach (var day in week.Schedule)
-                {
-                    dayList.Add(new Day(day));
-                }
-            }
-            return new SiteScraperReturnObject(SiteScraperReturnStatus.Success, dayList);
-            /*
             string page = GetSiteData();
             var login = LoginCheck(page);
             if (login.Status == SiteScraperReturnStatus.Error ||
@@ -119,28 +80,12 @@ namespace WalmartAutoScheduleAndroid.Scraper
                 }
             }
             return new SiteScraperReturnObject(SiteScraperReturnStatus.Success, dayList);
-            */
         }
-        private string GetData()
-        {
-            var uri = new Uri(GetUri(_settings.UserName, _settings.Password));
 
-            using (var client = new HttpClient())
-            {
-                var get = client.GetAsync(uri).Result;
-                if (get.StatusCode != HttpStatusCode.OK)
-                    Console.WriteLine("Could not login -> StatusCode = " + get.StatusCode);
-                else
-                    Console.WriteLine("Login Successfull.");
-
-                string data = get.Content.ReadAsStringAsync().Result;
-                return data;
-            }
-        }
         private string GetSiteData()
         {
-            const string loginUrl = "https://authn.walmartone.com/login.aspx";
-            const string endUrl = "https://login.walmartone.com/onlineschedule/schedule/FullSchedule.aspx#";
+            const string loginUrl = "https://pfedprod.wal-mart.com/idp/SSO.saml2?SAMLRequest=hZLNTsMwEIRfJfI9P04JpVZbKaQgVSpQNcCBC7KcLVhy7OB1Wnh77FSF9gInS7sz3m%2FWniJvVcfK3r3rDXz0gC76bJVGNjRmpLeaGY4SmeYtIHOC1eXdiuVJxjprnBFGkRPL3w6OCNZJo0m0XMzIKx1d0yta5NXNxXVZXl7QcZ7fjGkxKSpaXFYZiZ7BotfPiLd7E2IPS42Oa%2BdLGZ3EWRFn9DHPGc3ZaPRCooXPIDV3g%2BvduQ5ZmnZbaDxuk%2By5iltuXSJMm8qmS%2Bv6IQngOYkqoxHCxX9FEAcRE721%2Foxl2ykppCPRrbEChk3OyJYrhMC79pHlDn4q5XEDYVjfgq3B7qSAp83ql9ZoCKA%2FnIHvVZk3qdPOoNsAdoGCzKehw4at2PnRLc7M0%2FRUMz28972PtVysjSf%2FCtwt%2Fyd1qMgm3g5S5izXKH16n0cps68scOczOtsDSeeHkee%2Fav4N&RelayState=https%3A%2F%2Fone.walmart.com%2Fcontent%2Fuswire%2Fen_us.html&attempts=1&skip.simultaneous.authn.req.check=Resubmit";
+            const string endUrl = "https://one.walmart.com/content/uswire/en_us.html";
             var uri = new Uri(loginUrl);
 
             CookieContainer cookies = new CookieContainer();
@@ -149,11 +94,10 @@ namespace WalmartAutoScheduleAndroid.Scraper
             handler.AllowAutoRedirect = true;
 
             var payload = new Payload(_settings.UserName, _settings.Password);
-            
+
             using (var client = new HttpClient(handler))
             {
                 client.DefaultRequestHeaders.Add("Connection", "keep-alive");
-                client.DefaultRequestHeaders.Add("Location", "https://login.walmartone.com:443/onlineschedule/schedule/FullSchedule.aspx");
                 client.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
                 client.BaseAddress = uri;
 
@@ -199,46 +143,19 @@ namespace WalmartAutoScheduleAndroid.Scraper
 
             public Payload(string un, string pw)
             {
-                //everything besides the un/pw is static from the login page. Not sure why wm even included it lol
-                //it looks like they were contemplating some sort of verification to prevent this type of activity,
-                //but gave up and hoped no one would notice.
-                ViewState = "/wEPDwULLTE0Nzk0MzA2OTJkZNkubljnaWdLhqt5LEbAyeznQvbh";
-                ViewStateGenerator = "C2EE9ABB";
-                EventValidation = "/wEdAAd5aKSokxuDiA+kBoNTrYp3rPjPsZEmBA3lX/H8NzbUjNQdyisHXQnOlgTBHd9s2IRPMSqB5MU0KLJ9HlkE5WOPGsmeGjk+hGqgXfcVwVSOnsCe+TIxyc238WqcckSintNvfha9fiJK+VUv37ujy4mQcrIktyb9eu1FaRzdcFSlJq5Xte0=";
-                UxAuthMode = "BASIC";
-                UxOrigUrl = "";
-                UxOverrideUri = false;
-                Auth_Mode = "basic";
-                SubmitCreds = "Login";
-                UxUserName = un;
-                UxPassword = pw;
-
-                WwwEncode = new Dictionary<string, string>
+                WwwEncode = new Dictionary<string, string>()
                 {
-                    { "__VIEWSTATE", ViewState },
-                    { "__VIEWSTATEGENERATOR", ViewStateGenerator },
-                    { "__EVENTVALIDATION", EventValidation },
-                    { "uxAuthMode", UxAuthMode },
-                    { "uxOrigUrl", UxOrigUrl },
-                    { "uxOverrideUri", UxOverrideUri.ToString().ToLower() },
-                    { "auth_mode", Auth_Mode },
-                    { "uxUserName", UxUserName },
-                    { "uxPassword", UxPassword },
-                    { "SubmitCreds", SubmitCreds }
+                    {"pf.username","mja002o.s01292@us.walmart.com" },
+                    {"pf.pass","M1292A" },
+                    {"domainName","US" },
+                    {"BU","st" },
+                    {"$store","1292" },
+                    {"pf.ok","clicked" },
+                    {"pf.cancel","" },
+                    {"g-recaptcha-response","03AOLTBLQhsMMENA1_TEqz-HgplSYQYgI_0VLCVJ28kx8jjfMHz-Akq_Kk2pdp_0bqpytEq0TVDEYAxjs6O2wdYEAz3Ope5Ze9V0IMY25AZNDySz2MqgycBaK3_nd2nuonNXo-BvaE4SF2vS139zQ2svp_UBdIvgLUENnQytXaE4nxdWhKwT8tJgZkGKkj8i5IaJp5hqbEdyLJ_ziLRZyB606KjYwQkcfD7Ljgh7a0y9YwjVdtpbnFDdT44cFGZ-Y_OWtKGEtJqIyyuz0mCfoXbxyeNy6cFSmJUqK9J3lMDK8Ur21SxPhp8tTxxF0PpkkSGsiV-szUfTfDh13UX0_BYjMNRYyV8Uer7g" },
+                    {"pf.adapterId","AdpFormUPNReCaptcha" }
                 };
-
             }
-        }
-    }
-
-    class SiteScraperReturnObject
-    {
-        public SiteScraperReturnStatus Status { get; }
-        public List<Day> Data { get; }
-        public SiteScraperReturnObject(SiteScraperReturnStatus status, List<Day> data)
-        {
-            Status = status;
-            Data = data;
         }
     }
 }

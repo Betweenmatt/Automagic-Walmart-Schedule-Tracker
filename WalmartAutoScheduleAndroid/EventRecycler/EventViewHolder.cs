@@ -47,8 +47,8 @@ namespace WalmartAutoScheduleAndroid.EventRecycler
         {
             if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
             {
-                ChangeTimeslotActivity.WorkingObj = WorkingObject;
-                v.Context.StartActivity(new Android.Content.Intent(v.Context, typeof(ChangeTimeslotActivity)));
+                //ChangeTimeslotActivity.WorkingObj = WorkingObject;
+                //v.Context.StartActivity(new Android.Content.Intent(v.Context, typeof(ChangeTimeslotActivity)));
             }
             else
             {

@@ -53,7 +53,7 @@ namespace WalmartAutoScheduleAndroid
                 StartActivity(new Android.Content.Intent(this, typeof(IntroActivity)));
                 Finish();
             }
-            else if(Settings.UserName == "")
+            /*else if(Settings.UserName == "")
             {
                 Toast.MakeText(this, "It appears your username and password aren't set, lets go to the settings menu.", ToastLength.Long).Show();
                 if (!Utilities.CheckCalendarPermissions(this))
@@ -62,7 +62,7 @@ namespace WalmartAutoScheduleAndroid
                 {
                     OpenSettings();
                 }
-            }
+            }*/
             
             RequestPermissionsIfAllowed(new string[] { Android.Manifest.Permission.ReadCalendar, Android.Manifest.Permission.WriteCalendar }, 0);
 
@@ -115,12 +115,12 @@ namespace WalmartAutoScheduleAndroid
         protected override void OnResume()
         {
             base.OnResume();
-            /*if (Settings.UserName == "")
+            if (Settings.UserName == "")
             {
                 Toast.MakeText(this, "It appears your username and password aren't set, lets go to the settings menu.", ToastLength.Long).Show();
                 if (Utilities.CheckCalendarPermissions(this))
                     OpenSettings();
-            }*/
+            }
             RefreshListAdapter();
             SetStatus();
         }
@@ -165,9 +165,6 @@ namespace WalmartAutoScheduleAndroid
             {
                 OpenSettings();
                 return true;
-            }else if(id == Resource.Id.action_changes)
-            {
-                StartActivity(new Android.Content.Intent(this, typeof(ChangesActivity)));
             }
 
             return base.OnOptionsItemSelected(item);

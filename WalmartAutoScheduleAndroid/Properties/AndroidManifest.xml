@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="11" android:versionName="1.0.10" package="com.andrewsstudios.automagicwalmartscheduletracker" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="13" android:versionName="1.0.12" package="com.andrewsstudios.automagicwalmartscheduletracker" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="26" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -7,7 +7,7 @@
 	<uses-permission android:name="android.permission.WRITE_CALENDAR" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<uses-permission android:name="android.permission.INTERNET" />
-	<application android:allowBackup="true" android:icon="@drawable/Walmart_Spark_Color" android:label="@string/app_name" android:roundIcon="@drawable/Walmart_Spark_Color" android:supportsRtl="true" android:theme="@style/AppTheme">
+	<application android:allowBackup="true" android:icon="@drawable/wm_Spark_Color" android:label="@string/app_name" android:roundIcon="@drawable/wm_Spark_Color" android:supportsRtl="true" android:theme="@style/AppTheme">
 		<meta-data android:name="io.fabric.ApiKey" android:value="cbc2d26f2a7ad93d925b4bc0331aadbfcd7fb84b" />
 	</application>
 </manifest>

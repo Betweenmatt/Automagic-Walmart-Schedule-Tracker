@@ -79,8 +79,8 @@ namespace WalmartAutoScheduleAndroid
 
 
 
-        public const string Version = "1.0.9";
-        public const int VersionCode = 10;
+        public const string Version = "1.0.11";
+        public const int VersionCode = 12;
 
 
         internal class Consts
@@ -89,9 +89,9 @@ namespace WalmartAutoScheduleAndroid
             public const string EventTitleDef = "Walmart - Work";
             public const string CalendarId = "CalendarId";
             public const long CalendarIdDef = 1;
-            public const string UserName = "UserName";
+            public const string UserName = "WINnumber";
             public const string UserNameDef = "";
-            public const string Password = "Password";
+            public const string Password = "StoreNumber";
             public const string PasswordDef = "";
             public const string EventColorId = "EventColorId";
             public const int EventColorIdDef = 6;

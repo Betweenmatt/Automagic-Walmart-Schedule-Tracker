@@ -12,10 +12,11 @@ using Android.Support.V7.App;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
-using VipAccess;
+//using VipAccess;
 
 namespace WalmartAutoScheduleAndroid.Activities
 {
+    /*
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = false)]
     class ChangesActivity : AppCompatActivity
     {
@@ -66,4 +67,5 @@ namespace WalmartAutoScheduleAndroid.Activities
             base.OnPause();
         }
     }
+    */
 }

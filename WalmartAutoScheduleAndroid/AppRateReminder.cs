@@ -25,7 +25,7 @@ namespace WalmartAutoScheduleAndroid
         private const string _dateFirstLaunched = "dateFirstLaunch";
         private const string _appRateReminder = "appRateReminder";
 
-        private const string _changesAreComingReminder = "changesAreComingReminder";
+        private const string _changesAreComingReminder = "newLoginReminder";
 
         public static bool HasChangesAreComingTriggered(Context context)
         {
@@ -50,12 +50,12 @@ namespace WalmartAutoScheduleAndroid
         {
             ISharedPreferences prefs = context.GetSharedPreferences(_appRateReminder, 0);
 
-            bool changesAreComingBool = prefs.GetBoolean(_changesAreComingReminder, false);
+            //bool changesAreComingBool = prefs.GetBoolean(_changesAreComingReminder, false);
             ISharedPreferencesEditor editor = prefs.Edit();
-            if (!changesAreComingBool)
-            {
-                ChangesAreComingDialog(context, editor);
-            }
+            //if (!changesAreComingBool)
+            //{
+            //    ChangesAreComingDialog(context, editor);
+            //}
 
 
 
@@ -113,17 +113,9 @@ namespace WalmartAutoScheduleAndroid
             AlertDialog.Builder dialog = new AlertDialog.Builder(context);
             dialog.SetTitle($"Important!");
             dialog.SetCancelable(false);
-            dialog.SetMessage("There are some important changes coming that will stop this app from working soon. Please click Ok to read more about them!");
+            dialog.SetMessage("");
             dialog.SetPositiveButton("Ok", (s, e) =>
             {
-                //this is hijacking the changes dialog to add push/status notifications flags to settings lol
-                //since they will be automatically off for anyone who updates the app 
-                Settings.NotificationFlags |= NotificationFlag.Status | NotificationFlag.Push;
-                Settings.SaveAllSettings(context);
-                //
-                editor.PutBoolean(_changesAreComingReminder, false);
-                editor.Commit();
-                context.StartActivity(new Intent(context, typeof(ChangesActivity)));
             });
             dialog.Show();
         }

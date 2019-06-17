@@ -96,16 +96,12 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Views\TimePreference.cs" />
-    <Compile Include="VipAccess\Base32Encoding.cs" />
-    <Compile Include="VipAccess\GenerateRequest.cs" />
-    <Compile Include="VipAccess\GoogleAuthenticator.cs" />
-    <Compile Include="VipAccess\RequestTemplate.cs" />
-    <Compile Include="VipAccess\ResultTemplate.cs" />
-    <Compile Include="VipAccess\StringCipher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
-    <None Include="Properties\AndroidManifest.xml" />
+    <None Include="Properties\AndroidManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -219,7 +215,7 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_wmautomagic.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\Walmart_Spark_Color.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\wm_Spark_Color.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\updateTimeslotSettings.xml" />
@@ -248,9 +244,6 @@
     <AndroidResource Include="Resources\layout\popup_login_dialog.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\wm1.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\updateTimeslotSettingsCompat.xml" />

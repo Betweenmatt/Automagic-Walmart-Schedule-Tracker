@@ -4,7 +4,7 @@
     <Preference
     android:title="Login"
     android:key="loginButton"
-    android:summary="Login to your WalmartOne Account."/>
+    android:summary="Login with your WIN and STORE number."/>
     <!--
     <EditTextPreference
         android:key="username"

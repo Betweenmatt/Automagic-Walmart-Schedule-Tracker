@@ -5524,26 +5524,26 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
+			// aapt resource value: 0x7f020078
+			public const int avd_hide_password_1 = 2130837624;
+			
 			// aapt resource value: 0x7f020079
-			public const int avd_hide_password_1 = 2130837625;
+			public const int avd_hide_password_2 = 2130837625;
 			
 			// aapt resource value: 0x7f02007a
-			public const int avd_hide_password_2 = 2130837626;
-			
-			// aapt resource value: 0x7f02007b
-			public const int avd_hide_password_3 = 2130837627;
+			public const int avd_hide_password_3 = 2130837626;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
+			// aapt resource value: 0x7f02007b
+			public const int avd_show_password_1 = 2130837627;
+			
 			// aapt resource value: 0x7f02007c
-			public const int avd_show_password_1 = 2130837628;
+			public const int avd_show_password_2 = 2130837628;
 			
 			// aapt resource value: 0x7f02007d
-			public const int avd_show_password_2 = 2130837629;
-			
-			// aapt resource value: 0x7f02007e
-			public const int avd_show_password_3 = 2130837630;
+			public const int avd_show_password_3 = 2130837629;
 			
 			// aapt resource value: 0x7f020055
 			public const int calendar_color_picker_swatch = 2130837589;
@@ -5629,11 +5629,11 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f020070
 			public const int notification_icon_background = 2130837616;
 			
-			// aapt resource value: 0x7f020077
-			public const int notification_template_icon_bg = 2130837623;
+			// aapt resource value: 0x7f020076
+			public const int notification_template_icon_bg = 2130837622;
 			
-			// aapt resource value: 0x7f020078
-			public const int notification_template_icon_low_bg = 2130837624;
+			// aapt resource value: 0x7f020077
+			public const int notification_template_icon_low_bg = 2130837623;
 			
 			// aapt resource value: 0x7f020071
 			public const int notification_tile_bg = 2130837617;
@@ -5648,10 +5648,7 @@ namespace WalmartAutoScheduleAndroid
 			public const int tooltip_frame_light = 2130837620;
 			
 			// aapt resource value: 0x7f020075
-			public const int Walmart_Spark_Color = 2130837621;
-			
-			// aapt resource value: 0x7f020076
-			public const int wm1 = 2130837622;
+			public const int wm_Spark_Color = 2130837621;
 			
 			static Drawable()
 			{

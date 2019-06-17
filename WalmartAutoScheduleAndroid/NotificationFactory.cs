@@ -69,9 +69,12 @@ namespace WalmartAutoScheduleAndroid
         }
         private PendingIntent OpenChanges(Context context)
         {
+            /*
             var intent = new Intent(context, typeof(ChangesActivity));
             PendingIntent output = PendingIntent.GetActivity(context, 0, intent, 0);
             return output;
+            */
+            return null;
         }
         private PendingIntent OpenMainActivity(Context context)
         {

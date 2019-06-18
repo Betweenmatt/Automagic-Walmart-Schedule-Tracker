@@ -79,8 +79,8 @@ namespace WalmartAutoScheduleAndroid
 
 
 
-        public const string Version = "1.0.11";
-        public const int VersionCode = 12;
+        public const string Version = "1.0.13";
+        public const int VersionCode = 14;
 
 
         internal class Consts

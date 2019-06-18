@@ -108,6 +108,10 @@ namespace WalmartAutoScheduleAndroid.Scraper
 
                 Meal = $"Meal {mealStart.ToString("h:mm tt")} - {mealEnd.ToString("h:mm tt")}";
             }
+            else
+            {
+                Meal = "No Meal";
+            }
             Identifier = this.ToString();
         }
         /// <summary>
@@ -168,6 +172,11 @@ namespace WalmartAutoScheduleAndroid.Scraper
         }
         private double GetMealTime()
         {
+            if (Meal == null)
+            {
+                Meal = "";
+                return 0;
+            }
             if (!Meal.Any(char.IsDigit))
                 return 0;
 

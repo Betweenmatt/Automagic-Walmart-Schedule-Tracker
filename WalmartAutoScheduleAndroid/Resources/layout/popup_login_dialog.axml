@@ -19,6 +19,11 @@
           android:textSize="25sp"
           android:textStyle="bold" />
           -->
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toggle"
+        android:text="WalmartOne Login"/>
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
@@ -39,9 +44,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
-        android:text="Make sure you enter your WIN number correctly! If you have any issues logging in please contact me via the support button."
+        android:text="Make sure you enter your WIN and STORE number correctly! If you are in a region that still uses WalmartOne please check the checkbox above! If you have any issues logging in please contact me via the support button."
         android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        />
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"

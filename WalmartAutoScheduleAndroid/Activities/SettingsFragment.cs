@@ -91,15 +91,35 @@ namespace WalmartAutoScheduleAndroid.Activities
                 dialog.SetCancelable(true);
                 var un = dialog.FindViewById<EditText>(Resource.Id.etEmail);
                 var pw = dialog.FindViewById<EditText>(Resource.Id.etPassword);
+                var wm1toggle = dialog.FindViewById<CheckBox>(Resource.Id.toggle);
+                var hintText = dialog.FindViewById<TextView>(Resource.Id.textView);
+                wm1toggle.Checked = Settings.Wm1Flag;
+                wm1toggle.CheckedChange += (ss, ee) =>
+                {
+                    if (ee.IsChecked)
+                    {
+                        un.Hint = "WalmartOne Username";
+                        pw.Hint = "WalmartOne Password";
+                        hintText.Text = "Make sure you enter your WalmartOne login information correctly! This setting should only be used by associates who work in regions that still use WalmartOne!";
+                    }
+                    else
+                    {
+                        un.Hint = "WIN Number";
+                        pw.Hint = "StoreNumber";
+                        hintText.Text = "Make sure you enter your WIN and STORE number correctly! If you are in a region that still uses WalmartOne please check the checkbox above! If you have any issues logging in please contact me via the support button.";
+                    }
+                };
                 var login = dialog.FindViewById<Button>(Resource.Id.btnLogin);
                 //Linkify.AddLinks(help, MatchOptions.All);
                 un.Text = Settings.UserName;
                 pw.Text = Settings.Password;
+
                 dialog.Show();
                 login.Click += (ss, ee) =>
                 {
                     login.Enabled = false;
                     Settings.UserName = un.Text;
+                    Settings.Wm1Flag = wm1toggle.Checked;
                     Settings.Password = pw.Text;
                     var prog = new ProgressDialog(this.Activity);
                     prog.SetTitle("Logging in");

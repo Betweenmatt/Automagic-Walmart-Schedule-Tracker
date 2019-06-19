@@ -77,6 +77,15 @@ namespace WalmartAutoScheduleAndroid
         public static string OtpSecret { get; set; }
         private static string _otpSecret;
 
+        public static bool Wm1Flag { get; set; }
+        private static bool _wm1Flag;
+
+        public static string WinNumber { get; set; }
+        private static string _winNumber;
+
+        public static string StoreNumber { get; set; }
+        private static string _storeNumber;
+
 
 
         public const string Version = "1.0.13";
@@ -129,6 +138,12 @@ namespace WalmartAutoScheduleAndroid
             public const string OtpKeyDef = "";
             public const string OtpSecret = "OtpSecret";
             public const string OtpSecretDef = "";
+            public const string Wm1Flag = "WmOneFlag";
+            public const bool Wm1FlagDef = false;
+            public const string WinNumber = "WinNumber";
+            public const string WinNumberDef = "";
+            public const string StoreNumber = "StoreNumber";
+            public const string StoreNumberDef = "";
         }
 
         public static void SaveAllSettings(Context context)
@@ -170,7 +185,12 @@ namespace WalmartAutoScheduleAndroid
                 editor.PutString(Consts.OtpKey, _otpKey = OtpKey);
             if (OtpSecret != _otpSecret)
                 editor.PutString(Consts.OtpSecret, _otpSecret = OtpSecret);
-            
+            if (Wm1Flag != _wm1Flag)
+                editor.PutBoolean(Consts.Wm1Flag, _wm1Flag = Wm1Flag);
+            if (WinNumber != _winNumber)
+                editor.PutString(Consts.WinNumber, _winNumber = WinNumber);
+            if (StoreNumber != _storeNumber)
+                editor.PutString(Consts.StoreNumber, _storeNumber = StoreNumber);
             if (PushNotificationIds.Count != _pushNotificationIds.Count)
             {
                 var json = JsonConvert.SerializeObject(PushNotificationIds);
@@ -203,6 +223,9 @@ namespace WalmartAutoScheduleAndroid
             _secretKey = SecretKey = settings.GetString(Consts.SecretKey, Consts.SecretKeyDef);
             _otpKey = OtpKey = settings.GetString(Consts.OtpKey, Consts.OtpKeyDef);
             _otpSecret = OtpSecret = settings.GetString(Consts.OtpSecret, Consts.OtpSecretDef);
+            _wm1Flag = Wm1Flag = settings.GetBoolean(Consts.Wm1Flag, Consts.Wm1FlagDef);
+            _winNumber = WinNumber = settings.GetString(Consts.WinNumber, Consts.WinNumberDef);
+            _storeNumber = StoreNumber = settings.GetString(Consts.StoreNumber, Consts.StoreNumberDef);
             if (PushNotificationIds == null)
             {
                 PushNotificationIds = new List<int>();
@@ -235,6 +258,7 @@ namespace WalmartAutoScheduleAndroid
 
         public bool IsCalendarGoogle { get; }
         
+        public bool Wm1Flag { get; }
 
         public SettingsObject()
         {
@@ -247,6 +271,7 @@ namespace WalmartAutoScheduleAndroid
             NotificationFlags = Settings.NotificationFlags;
             Reminder = Settings.Reminder;
             IsCalendarGoogle = Settings.IsCalendarGoogle;
+            Wm1Flag = Settings.Wm1Flag;
         }
     }
 }

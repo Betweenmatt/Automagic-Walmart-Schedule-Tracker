@@ -37,89 +37,104 @@ namespace WalmartAutoScheduleAndroid.Scraper
         /// <returns></returns>
         public SiteScraperReturnObject LoginCheck(string page = null)
         {
-            /*
-            System.Diagnostics.Debug.WriteLine("starting login");
-            if(page == null)
-                page = GetSiteData();
-            //Console.WriteLine(page);
-            System.Diagnostics.Debug.WriteLine("login complete");
+            if (_settings.Wm1Flag)
+            {
+                System.Diagnostics.Debug.WriteLine("starting login");
+                if(page == null)
+                    page = GetSiteData();
+                //Console.WriteLine(page);
+                System.Diagnostics.Debug.WriteLine("login complete");
 
-            //scrape checks to ensure the correct page was loaded
-            if (page.Contains("WalmartOne - Associate Login"))
-            {
-                return new SiteScraperReturnObject(SiteScraperReturnStatus.WrongLogin, null);
+                //scrape checks to ensure the correct page was loaded
+                if (page.Contains("WalmartOne - Associate Login"))
+                {
+                    return new SiteScraperReturnObject(SiteScraperReturnStatus.WrongLogin, null);
+                }
+                else if (page.Contains("OnlineSchedule Error Page"))
+                {
+                    return new SiteScraperReturnObject(SiteScraperReturnStatus.Error, null);
+                }
+                return new SiteScraperReturnObject(SiteScraperReturnStatus.Success, null);   
             }
-            else if (page.Contains("OnlineSchedule Error Page"))
+            else
             {
-                return new SiteScraperReturnObject(SiteScraperReturnStatus.Error, null);
+                if (page == null) page = GetData();
+                if (page == "")
+                {
+                    return new SiteScraperReturnObject(SiteScraperReturnStatus.Error, null);
+                }
+                else if (page.Contains("LoginNameNotFound") || page.Contains("\"status\":500"))
+                {
+                    return new SiteScraperReturnObject(SiteScraperReturnStatus.WrongLogin, null);
+                }
+                return new SiteScraperReturnObject(SiteScraperReturnStatus.Success, null);
             }
-            return new SiteScraperReturnObject(SiteScraperReturnStatus.Success, null);
-            */
-            if (page == null) page = GetData();
-            if (page == "")
-            {
-                return new SiteScraperReturnObject(SiteScraperReturnStatus.Error, null);
-            } else if (page.Contains("LoginNameNotFound") || page.Contains("\"status\":500"))
-            {
-                return new SiteScraperReturnObject(SiteScraperReturnStatus.WrongLogin, null);
-            }
-            return new SiteScraperReturnObject(SiteScraperReturnStatus.Success, null);
         }
 
         public SiteScraperReturnObject Execute()
         {
-            string page = GetData();
-            var login = LoginCheck(page);
-            if (login.Status == SiteScraperReturnStatus.Error || login.Status == SiteScraperReturnStatus.WrongLogin)
-                return login;
-            var obj = JsonConvert.DeserializeObject<WmJsonObject>(page);
-            List<Day> dayList = new List<Day>();
-            foreach (var week in obj.Payload.Associates[0].Weeks)
+            if (!_settings.Wm1Flag)
             {
-                foreach (var day in week.Schedule)
+                string page = GetData();
+                var login = LoginCheck(page);
+                if (login.Status == SiteScraperReturnStatus.Error || login.Status == SiteScraperReturnStatus.WrongLogin)
+                    return login;
+                var obj = JsonConvert.DeserializeObject<WmJsonObject>(page);
+                List<Day> dayList = new List<Day>();
+                int index = 0;
+                foreach (var week in obj.Payload.Associates[0].Weeks)
                 {
-                    dayList.Add(new Day(day));
-                }
-            }
-            return new SiteScraperReturnObject(SiteScraperReturnStatus.Success, dayList);
-            /*
-            string page = GetSiteData();
-            var login = LoginCheck(page);
-            if (login.Status == SiteScraperReturnStatus.Error ||
-                login.Status == SiteScraperReturnStatus.WrongLogin)
-                return login;
-            //HAP voodoo
-            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            doc.LoadHtml(page);
-            var collection = doc.DocumentNode.SelectNodes("//table[@class='weekTable']//tr");
-            List<Day> dayList = new List<Day>();
-            foreach (var x in collection)
-            {
-                //Console.WriteLine(x.InnerHtml);
-                string times = x.SelectNodes(".//span[@class='schedTime']")?[0]?.SelectSingleNode(".//b").InnerText;
-                string desc = x.SelectNodes(".//span[@class='schedTime']")?[0]?.InnerHtml;
-                if (times != null && times != "" && times != " ")
-                {
-                    string[] descsplit = desc.Replace(times, "")
-                            .Replace("<b>", "")
-                            .Replace("</b>", "")
-                            .Replace("&nbsp;", "")
-                            .Replace("<br>", "\n")
-                            .Replace("</span>", "").Split(new string[] { "<span>" }, StringSplitOptions.None);
-                    var day = new Day(x.GetAttributeValue("dataDate", ""), times, descsplit[0].TrimStart(' '), descsplit[1]);
-                    dayList.Add(day);
-                }
-                else
-                {
-                    var errcheck = x.SelectNodes(".//span[@class='todaySched']")?[0]?.SelectSingleNode(".//span").InnerHtml;
-                    if (errcheck != null && errcheck != "" && errcheck != " ")
+                    if (++index <= 3)//prevent unfinilized schedule from appearing
                     {
-                        dayList.Add(new Day(x.GetAttributeValue("dataDate", "")));
+                        foreach (var day in week.Schedule)
+                        {
+                            dayList.Add(new Day(day));
+                        }
                     }
                 }
+                return new SiteScraperReturnObject(SiteScraperReturnStatus.Success, dayList);
             }
-            return new SiteScraperReturnObject(SiteScraperReturnStatus.Success, dayList);
-            */
+            else
+            {
+                
+                string page = GetSiteData();
+                var login = LoginCheck(page);
+                if (login.Status == SiteScraperReturnStatus.Error ||
+                    login.Status == SiteScraperReturnStatus.WrongLogin)
+                    return login;
+                //HAP voodoo
+                HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                doc.LoadHtml(page);
+                var collection = doc.DocumentNode.SelectNodes("//table[@class='weekTable']//tr");
+                List<Day> dayList = new List<Day>();
+                foreach (var x in collection)
+                {
+                    //Console.WriteLine(x.InnerHtml);
+                    string times = x.SelectNodes(".//span[@class='schedTime']")?[0]?.SelectSingleNode(".//b").InnerText;
+                    string desc = x.SelectNodes(".//span[@class='schedTime']")?[0]?.InnerHtml;
+                    if (times != null && times != "" && times != " ")
+                    {
+                        string[] descsplit = desc.Replace(times, "")
+                                .Replace("<b>", "")
+                                .Replace("</b>", "")
+                                .Replace("&nbsp;", "")
+                                .Replace("<br>", "\n")
+                                .Replace("</span>", "").Split(new string[] { "<span>" }, StringSplitOptions.None);
+                        var day = new Day(x.GetAttributeValue("dataDate", ""), times, descsplit[0].TrimStart(' '), descsplit[1]);
+                        dayList.Add(day);
+                    }
+                    else
+                    {
+                        var errcheck = x.SelectNodes(".//span[@class='todaySched']")?[0]?.SelectSingleNode(".//span").InnerHtml;
+                        if (errcheck != null && errcheck != "" && errcheck != " ")
+                        {
+                            dayList.Add(new Day(x.GetAttributeValue("dataDate", "")));
+                        }
+                    }
+                }
+                return new SiteScraperReturnObject(SiteScraperReturnStatus.Success, dayList);
+                
+            }
         }
         private string GetData()
         {

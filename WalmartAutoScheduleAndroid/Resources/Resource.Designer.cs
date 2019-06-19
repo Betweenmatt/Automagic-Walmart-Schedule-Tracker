@@ -5732,8 +5732,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f09005c
 			public const int action_mode_close_button = 2131296348;
 			
-			// aapt resource value: 0x7f0900e0
-			public const int action_settings = 2131296480;
+			// aapt resource value: 0x7f0900e1
+			public const int action_settings = 2131296481;
 			
 			// aapt resource value: 0x7f0900b6
 			public const int action_text = 2131296438;
@@ -5783,8 +5783,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f0900a9
 			public const int bottom_separator = 2131296425;
 			
-			// aapt resource value: 0x7f0900cd
-			public const int btnLogin = 2131296461;
+			// aapt resource value: 0x7f0900ce
+			public const int btnLogin = 2131296462;
 			
 			// aapt resource value: 0x7f090063
 			public const int buttonPanel = 2131296355;
@@ -5798,8 +5798,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f0900b8
 			public const int cancel_action = 2131296440;
 			
-			// aapt resource value: 0x7f0900d6
-			public const int card_view = 2131296470;
+			// aapt resource value: 0x7f0900d7
+			public const int card_view = 2131296471;
 			
 			// aapt resource value: 0x7f090045
 			public const int center = 2131296325;
@@ -5855,8 +5855,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f09006c
 			public const int customPanel = 2131296364;
 			
-			// aapt resource value: 0x7f0900d8
-			public const int date = 2131296472;
+			// aapt resource value: 0x7f0900d9
+			public const int date = 2131296473;
 			
 			// aapt resource value: 0x7f09007a
 			public const int decor_content_parent = 2131296378;
@@ -5891,8 +5891,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f09007e
 			public const int edit_query = 2131296382;
 			
-			// aapt resource value: 0x7f0900d7
-			public const int elevated_card = 2131296471;
+			// aapt resource value: 0x7f0900d8
+			public const int elevated_card = 2131296472;
 			
 			// aapt resource value: 0x7f090030
 			public const int end = 2131296304;
@@ -5906,11 +5906,11 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f090040
 			public const int enterAlwaysCollapsed = 2131296320;
 			
-			// aapt resource value: 0x7f0900ca
-			public const int etEmail = 2131296458;
-			
 			// aapt resource value: 0x7f0900cb
-			public const int etPassword = 2131296459;
+			public const int etEmail = 2131296459;
+			
+			// aapt resource value: 0x7f0900cc
+			public const int etPassword = 2131296460;
 			
 			// aapt resource value: 0x7f090041
 			public const int exitUntilCollapsed = 2131296321;
@@ -5936,8 +5936,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f090058
 			public const int forever = 2131296344;
 			
-			// aapt resource value: 0x7f0900db
-			public const int fragment_container = 2131296475;
+			// aapt resource value: 0x7f0900dc
+			public const int fragment_container = 2131296476;
 			
 			// aapt resource value: 0x7f090091
 			public const int generateButton = 2131296401;
@@ -5945,11 +5945,11 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f09000a
 			public const int ghost_view = 2131296266;
 			
-			// aapt resource value: 0x7f0900d5
-			public const int header_text = 2131296469;
+			// aapt resource value: 0x7f0900d6
+			public const int header_text = 2131296470;
 			
-			// aapt resource value: 0x7f0900d4
-			public const int header_view = 2131296468;
+			// aapt resource value: 0x7f0900d5
+			public const int header_view = 2131296469;
 			
 			// aapt resource value: 0x7f090005
 			public const int home = 2131296261;
@@ -5960,8 +5960,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f090062
 			public const int icon = 2131296354;
 			
-			// aapt resource value: 0x7f0900ce
-			public const int icon_frame = 2131296462;
+			// aapt resource value: 0x7f0900cf
+			public const int icon_frame = 2131296463;
 			
 			// aapt resource value: 0x7f0900c5
 			public const int icon_group = 2131296453;
@@ -5996,8 +5996,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f090018
 			public const int line3 = 2131296280;
 			
-			// aapt resource value: 0x7f0900d0
-			public const int list = 2131296464;
+			// aapt resource value: 0x7f0900d1
+			public const int list = 2131296465;
 			
 			// aapt resource value: 0x7f09001d
 			public const int listMode = 2131296285;
@@ -6008,17 +6008,17 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f0900a6
 			public const int main = 2131296422;
 			
-			// aapt resource value: 0x7f0900de
-			public const int masked = 2131296478;
+			// aapt resource value: 0x7f0900df
+			public const int masked = 2131296479;
 			
-			// aapt resource value: 0x7f0900da
-			public const int meal = 2131296474;
+			// aapt resource value: 0x7f0900db
+			public const int meal = 2131296475;
 			
 			// aapt resource value: 0x7f0900ba
 			public const int media_actions = 2131296442;
 			
-			// aapt resource value: 0x7f0900df
-			public const int menu_about = 2131296479;
+			// aapt resource value: 0x7f0900e0
+			public const int menu_about = 2131296480;
 			
 			// aapt resource value: 0x7f0900c8
 			public const int menurow_square = 2131296456;
@@ -6026,8 +6026,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f0900c9
 			public const int menurow_title = 2131296457;
 			
-			// aapt resource value: 0x7f0900dc
-			public const int message = 2131296476;
+			// aapt resource value: 0x7f0900dd
+			public const int message = 2131296477;
 			
 			// aapt resource value: 0x7f090031
 			public const int middle = 2131296305;
@@ -6164,17 +6164,17 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f090090
 			public const int secret = 2131296400;
 			
-			// aapt resource value: 0x7f0900d1
-			public const int seekbar = 2131296465;
-			
 			// aapt resource value: 0x7f0900d2
-			public const int seekbar_value = 2131296466;
+			public const int seekbar = 2131296466;
+			
+			// aapt resource value: 0x7f0900d3
+			public const int seekbar_value = 2131296467;
 			
 			// aapt resource value: 0x7f09008a
 			public const int select_dialog_listview = 2131296394;
 			
-			// aapt resource value: 0x7f0900d9
-			public const int shift = 2131296473;
+			// aapt resource value: 0x7f0900da
+			public const int shift = 2131296474;
 			
 			// aapt resource value: 0x7f090074
 			public const int shortcut = 2131296372;
@@ -6206,8 +6206,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f090064
 			public const int spacer = 2131296356;
 			
-			// aapt resource value: 0x7f0900cf
-			public const int spinner = 2131296463;
+			// aapt resource value: 0x7f0900d0
+			public const int spinner = 2131296464;
 			
 			// aapt resource value: 0x7f090008
 			public const int split_action_bar = 2131296264;
@@ -6233,8 +6233,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f090087
 			public const int submit_area = 2131296391;
 			
-			// aapt resource value: 0x7f0900d3
-			public const int switchWidget = 2131296467;
+			// aapt resource value: 0x7f0900d4
+			public const int switchWidget = 2131296468;
 			
 			// aapt resource value: 0x7f09001f
 			public const int tabMode = 2131296287;
@@ -6257,8 +6257,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f090069
 			public const int textSpacerNoTitle = 2131296361;
 			
-			// aapt resource value: 0x7f0900cc
-			public const int textView = 2131296460;
+			// aapt resource value: 0x7f0900cd
+			public const int textView = 2131296461;
 			
 			// aapt resource value: 0x7f0900a5
 			public const int text_input_password_toggle = 2131296421;
@@ -6280,6 +6280,9 @@ namespace WalmartAutoScheduleAndroid
 			
 			// aapt resource value: 0x7f09006f
 			public const int title_template = 2131296367;
+			
+			// aapt resource value: 0x7f0900ca
+			public const int toggle = 2131296458;
 			
 			// aapt resource value: 0x7f09008b
 			public const int toolbar = 2131296395;
@@ -6326,8 +6329,8 @@ namespace WalmartAutoScheduleAndroid
 			// aapt resource value: 0x7f0900a8
 			public const int view_pager = 2131296424;
 			
-			// aapt resource value: 0x7f0900dd
-			public const int visible = 2131296477;
+			// aapt resource value: 0x7f0900de
+			public const int visible = 2131296478;
 			
 			// aapt resource value: 0x7f09003c
 			public const int withText = 2131296316;

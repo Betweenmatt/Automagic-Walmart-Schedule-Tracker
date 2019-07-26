@@ -145,8 +145,7 @@ namespace WalmartAutoScheduleAndroid.Scraper
             {
                 WwwEncode = new Dictionary<string, string>()
                 {
-                    {"pf.username","mja002o.s01292@us.walmart.com" },
-                    {"pf.pass","M1292A" },
+                    
                     {"domainName","US" },
                     {"BU","st" },
                     {"$store","1292" },
